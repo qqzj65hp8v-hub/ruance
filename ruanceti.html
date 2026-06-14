@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>计算机软件测试员——理论题库测试</title>
+<style>
+  :root {
+    --bg: #f3f4f6;
+    --surface: #ffffff;
+    --surface-hover: #f9fafb;
+    --surface-active: #f3f4f6;
+    --border: #e5e7eb;
+    --border-strong: #d1d5db;
+    --text-primary: #111827;
+    --text-secondary: #4b5563;
+    --text-tertiary: #9ca3af;
+    --primary: #2563eb;
+    --primary-light: #eff6ff;
+    --primary-hover: #1d4ed8;
+    --success: #16a34a;
+    --success-light: #f0fdf4;
+    --warning: #f59e0b;
+    --warning-light: #fffbeb;
+    --danger: #dc2626;
+    --danger-light: #fef2f2;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 10px 30px rgba(0,0,0,0.08);
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.25s ease;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app { max-width: 800px; margin: 0 auto; min-height: 100vh; }
+  .page { animation: fadeIn 0.35s ease; padding: 0 16px 32px; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; }
+  h2 { font-size: 20px; font-weight: 600; }
+  .text-secondary { color: var(--text-secondary); }
+  .text-tertiary { color: var(--text-tertiary); }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 12px 24px; border: none; border-radius: var(--radius-md);
+    font-size: 15px; font-weight: 500; cursor: pointer; transition: all var(--transition-fast);
+    min-height: 44px; min-width: 88px;
+  }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-primary { background: var(--primary); color: #fff; box-shadow: var(--shadow-sm); }
+  .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .btn-secondary { background: var(--surface); color: var(--text-secondary); border: 1px solid var(--border); }
+  .btn-secondary:hover { background: var(--surface-hover); border-color: var(--border-strong); }
+  .btn-danger { background: var(--danger); color: #fff; }
+  .btn-danger:hover { background: #b91c1c; }
+  .btn-ghost { background: transparent; color: var(--text-secondary); }
+  .btn-ghost:hover { background: var(--surface-active); }
+  .btn-lg { padding: 14px 40px; font-size: 17px; min-height: 52px; }
+  .btn-sm { padding: 8px 16px; font-size: 13px; min-height: 36px; }
+
+  .home-header { padding: 48px 0 32px; text-align: center; }
+  .home-header h1 { margin-bottom: 8px; }
+  .home-header p { font-size: 15px; color: var(--text-secondary); }
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 32px; }
+  .stat-card {
+    background: var(--surface); border-radius: var(--radius-md); padding: 20px 12px;
+    text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+    transition: transform var(--transition-fast);
+  }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .stat-card .num { font-size: 28px; font-weight: 700; color: var(--primary); line-height: 1; }
+  .stat-card .label { font-size: 13px; color: var(--text-tertiary); margin-top: 6px; }
+  .home-action { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; padding-bottom: 24px; }
+
+  .exam-sticky {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border); padding: 12px 16px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .sticky-left { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
+  .progress-bar-wrap { flex: 1; max-width: 280px; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .progress-bar { height: 100%; background: var(--primary); border-radius: 4px; transition: width 0.4s ease; width: 0%; }
+  .progress-text { font-size: 13px; font-weight: 500; color: var(--text-secondary); white-space: nowrap; }
+  .timer { font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--primary); }
+
+  .nav-section { background: var(--surface); border-radius: var(--radius-md); border: 1px solid var(--border); margin: 16px 0; overflow: hidden; }
+  .nav-header {
+    display: flex; align-items: center; justify-content: space-between; padding: 12px 16px;
+    cursor: pointer; user-select: none; border-bottom: 1px solid transparent; transition: border-color var(--transition-fast);
+  }
+  .nav-header:hover { background: var(--surface-hover); }
+  .nav-header.open { border-bottom-color: var(--border); }
+  .nav-header h2 { font-size: 15px; font-weight: 500; }
+  .nav-toggle { font-size: 12px; color: var(--text-tertiary); transition: transform var(--transition-fast); }
+  .nav-header.open .nav-toggle { transform: rotate(180deg); }
+  .nav-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 16px; }
+  .nav-body.open { max-height: 500px; padding: 12px 16px; }
+  .nav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 6px; }
+  .nav-item {
+    height: 40px; display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-sm); background: var(--bg); cursor: pointer;
+    font-size: 13px; font-weight: 500; transition: all var(--transition-fast);
+    border: 2px solid transparent; color: var(--text-secondary);
+  }
+  .nav-item:hover { background: var(--border); color: var(--text-primary); }
+  .nav-item.answered { background: var(--primary); color: #fff; }
+  .nav-item.current { border-color: var(--primary); color: var(--primary); background: var(--primary-light); font-weight: 700; }
+  .nav-item.marked { position: relative; }
+  .nav-item.marked::after {
+    content: ''; position: absolute; top: 3px; right: 3px; width: 6px; height: 6px;
+    background: var(--warning); border-radius: 50%;
+  }
+
+  .q-card { background: var(--surface); border-radius: var(--radius-md); border: 1px solid var(--border); padding: 24px; box-shadow: var(--shadow-sm); }
+  .q-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .q-num { font-size: 15px; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 2px 10px; border-radius: var(--radius-sm); }
+  .q-type { font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: var(--radius-sm); }
+  .q-type.single { background: var(--primary-light); color: var(--primary); }
+  .q-type.multiple { background: var(--warning-light); color: var(--warning); }
+  .q-title { font-size: 17px; font-weight: 500; line-height: 1.7; color: var(--text-primary); word-break: break-word; }
+  .q-title br { display: block; content: ''; margin-bottom: 6px; }
+
+  .options { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+  .option {
+    display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
+    border: 1.5px solid var(--border); border-radius: var(--radius-md);
+    cursor: pointer; transition: all var(--transition-fast); background: var(--surface);
+    position: relative;
+  }
+  .option:hover { border-color: var(--primary); background: var(--primary-light); }
+  .option:active { transform: scale(0.995); }
+  .option.selected { border-color: var(--primary); background: var(--primary-light); box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
+  .option.correct { border-color: var(--success); background: var(--success-light); box-shadow: 0 0 0 3px rgba(22,163,74,0.08); cursor: default; }
+  .option.correct .option-key { background: var(--success); color: #fff; }
+  .option.wrong-option { border-color: var(--danger); background: var(--danger-light); box-shadow: 0 0 0 3px rgba(220,38,38,0.06); cursor: default; }
+  .option.wrong-option .option-key { background: var(--danger); color: #fff; }
+  .option input { width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; cursor: pointer; accent-color: var(--primary); }
+  .option input:disabled { cursor: default; }
+  .option-text { font-size: 15px; line-height: 1.5; color: var(--text-primary); }
+  .option-key {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 24px; height: 24px; border-radius: 50%; background: var(--bg);
+    font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-right: 4px;
+    transition: all var(--transition-fast);
+  }
+  .option.selected .option-key { background: var(--primary); color: #fff; }
+
+  .q-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; flex-wrap: wrap; }
+  .q-actions .group { display: flex; gap: 8px; }
+
+  .result-hero { background: var(--surface); border-radius: var(--radius-md); border: 1px solid var(--border); padding: 32px 20px; text-align: center; box-shadow: var(--shadow-sm); margin-top: 16px; }
+  .donut { position: relative; width: 140px; height: 140px; margin: 0 auto 16px; }
+  .donut svg { transform: rotate(-90deg); }
+  .donut-track { fill: none; stroke: var(--border); stroke-width: 10; }
+  .donut-fill { fill: none; stroke: var(--success); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1s ease; }
+  .donut-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 28px; font-weight: 700; color: var(--text-primary); }
+  .result-meta { display: flex; justify-content: center; gap: 32px; margin-top: 20px; flex-wrap: wrap; }
+  .meta-item { text-align: center; }
+  .meta-num { font-size: 22px; font-weight: 700; }
+  .meta-label { font-size: 12px; color: var(--text-tertiary); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .meta-correct .meta-num { color: var(--success); }
+  .meta-wrong .meta-num { color: var(--danger); }
+  .meta-empty .meta-num { color: var(--warning); }
+
+  .result-toolbar { display: flex; gap: 8px; justify-content: center; margin: 20px 0; flex-wrap: wrap; }
+  .chip { padding: 8px 18px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface); cursor: pointer; font-size: 14px; font-weight: 500; color: var(--text-secondary); transition: all var(--transition-fast); }
+  .chip:hover { border-color: var(--border-strong); background: var(--surface-hover); }
+  .chip.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+  .result-list { display: flex; flex-direction: column; gap: 8px; }
+  .r-item { background: var(--surface); border-radius: var(--radius-md); border: 1px solid var(--border); overflow: hidden; transition: box-shadow var(--transition-fast); }
+  .r-item:hover { box-shadow: var(--shadow-md); }
+  .r-summary { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; user-select: none; }
+  .r-summary:hover { background: var(--surface-hover); }
+  .r-badge { font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-sm); white-space: nowrap; }
+  .r-badge.correct { background: var(--success-light); color: var(--success); }
+  .r-badge.wrong { background: var(--danger-light); color: var(--danger); }
+  .r-badge.empty { background: var(--warning-light); color: var(--warning); }
+  .r-title { flex: 1; font-size: 14px; font-weight: 500; color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .r-arrow { font-size: 12px; color: var(--text-tertiary); transition: transform var(--transition-fast); }
+  .r-item.open .r-arrow { transform: rotate(180deg); }
+  .r-detail { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+  .r-item.open .r-detail { max-height: 400px; }
+  .r-body { padding: 0 16px 16px; border-top: 1px solid var(--border); margin-top: 0; }
+  .r-options { margin: 12px 0; display: flex; flex-direction: column; gap: 6px; }
+  .r-opt { font-size: 13px; padding: 6px 10px; border-radius: var(--radius-sm); background: var(--bg); color: var(--text-secondary); }
+  .r-opt.correct { background: var(--success-light); color: var(--success); font-weight: 500; }
+  .r-opt.wrong { background: var(--danger-light); color: var(--danger); }
+  .r-answer-row { display: flex; gap: 24px; font-size: 13px; color: var(--text-secondary); flex-wrap: wrap; }
+  .r-answer-row strong { color: var(--text-primary); }
+
+  .hidden { display: none !important; }
+  .center { text-align: center; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 22px; }
+    .stats-row { grid-template-columns: 1fr; }
+    .q-card { padding: 18px; }
+    .q-title { font-size: 16px; }
+    .option { padding: 12px; }
+    .exam-sticky { padding: 10px 12px; }
+    .progress-bar-wrap { max-width: 160px; }
+    .result-meta { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- Home -->
+  <div id="page-home" class="page">
+    <div class="home-header">
+      <h1>计算机软件测试员理论题库</h1>
+      <p>每次随机抽取 90 题进行模拟测试，或使用全部题库逐题练习</p>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="num">442</div>
+        <div class="label">题库总量</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">392</div>
+        <div class="label">单选题</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">50</div>
+        <div class="label">多选题</div>
+      </div>
+    </div>
+    <div class="home-action">
+      <button class="btn btn-primary btn-lg" onclick="startExam()">开始测试</button>
+      <button class="btn btn-secondary btn-lg" onclick="startPractice()">刷题模式</button>
+    </div>
+  </div>
+
+  <!-- Exam -->
+  <div id="page-exam" class="page hidden">
+    <div class="exam-sticky">
+      <div class="sticky-left">
+        <button class="btn btn-ghost btn-sm" onclick="goHome()">← 退出</button>
+        <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+        <span class="progress-text" id="progress-text">0 / 90</span>
+      </div>
+      <div class="timer" id="timer">00:00</div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-header open" id="nav-header" onclick="toggleNav()">
+        <h2>题号导航 <span class="text-tertiary" style="font-weight:400;font-size:13px;">（点击折叠）</span></h2>
+        <span class="nav-toggle">▼</span>
+      </div>
+      <div class="nav-body open" id="nav-body">
+        <div class="nav-grid" id="nav-grid"></div>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-header">
+        <span class="q-num" id="q-num">1</span>
+        <span class="q-type single" id="q-type">单选</span>
+      </div>
+      <div class="q-title" id="q-title"></div>
+      <div class="options" id="q-options"></div>
+      <div class="q-actions">
+        <div class="group">
+          <button class="btn btn-secondary" id="btn-prev" onclick="prevQuestion()">上一题</button>
+        </div>
+        <div class="group">
+          <button class="btn btn-secondary" id="btn-mark" onclick="markCurrent()">标记</button>
+          <button class="btn btn-danger" onclick="submitExam()">提交</button>
+          <button class="btn btn-secondary" id="btn-next" onclick="nextQuestion()">下一题</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Practice -->
+  <div id="page-practice" class="page hidden">
+    <div class="exam-sticky">
+      <div class="sticky-left">
+        <button class="btn btn-ghost btn-sm" onclick="goHome()">← 退出</button>
+        <div class="progress-bar-wrap"><div class="progress-bar" id="practice-progress-bar"></div></div>
+        <span class="progress-text" id="practice-progress-text">0 / 442</span>
+      </div>
+    </div>
+    <div class="q-card">
+      <div class="q-header">
+        <span class="q-num" id="p-num">1</span>
+        <span class="q-type single" id="p-type">单选</span>
+      </div>
+      <div class="q-title" id="p-title"></div>
+      <div class="options" id="p-options"></div>
+      <div id="p-confirm-wrap" class="center" style="margin-top: 16px; display: none;">
+        <button class="btn btn-primary" onclick="confirmPracticeAnswer()">确认答案</button>
+      </div>
+      <div id="p-result" class="hidden" style="margin-top: 20px; padding: 16px; border-radius: var(--radius-md); background: var(--bg);">
+        <div id="p-result-status" style="font-weight: 600; margin-bottom: 8px;"></div>
+        <div style="font-size: 14px; color: var(--text-secondary);">
+          你的答案：<strong id="p-user-ans"></strong>　|　
+          正确答案：<strong id="p-correct-ans" style="color: var(--success);"></strong>
+        </div>
+      </div>
+      <div class="q-actions">
+        <button class="btn btn-secondary" id="btn-p-prev" onclick="prevPractice()">上一题</button>
+        <button class="btn btn-primary hidden" id="btn-p-next" onclick="nextPractice()">下一题</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div id="page-result" class="page hidden">
+    <div class="result-hero">
+      <div class="donut">
+        <svg width="140" height="140" viewBox="0 0 140 140">
+          <circle class="donut-track" cx="70" cy="70" r="60"></circle>
+          <circle class="donut-fill" id="donut-fill" cx="70" cy="70" r="60"
+            stroke-dasharray="377" stroke-dashoffset="377"></circle>
+        </svg>
+        <div class="donut-text" id="donut-text">0%</div>
+      </div>
+      <div class="result-meta">
+        <div class="meta-item meta-correct"><div class="meta-num" id="meta-correct">0</div><div class="meta-label">答对</div></div>
+        <div class="meta-item meta-wrong"><div class="meta-num" id="meta-wrong">0</div><div class="meta-label">答错</div></div>
+        <div class="meta-item meta-empty"><div class="meta-num" id="meta-empty">0</div><div class="meta-label">未答</div></div>
+      </div>
+    </div>
+    <div class="result-toolbar">
+      <button class="chip active" onclick="filterResult('all', this)">全部</button>
+      <button class="chip" onclick="filterResult('wrong', this)">答错</button>
+      <button class="chip" onclick="filterResult('empty', this)">未答</button>
+    </div>
+    <div class="result-list" id="result-list"></div>
+    <div class="center" style="margin-top: 24px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="startExam()">重新测试</button>
+      <button class="btn btn-secondary" onclick="goHome()">返回首页</button>
+    </div>
+  </div>
+
+  <!-- Practice Summary -->
+  <div id="page-practice-summary" class="page hidden">
+    <div class="result-hero">
+      <div class="donut">
+        <svg width="140" height="140" viewBox="0 0 140 140">
+          <circle class="donut-track" cx="70" cy="70" r="60"></circle>
+          <circle class="donut-fill" id="practice-donut-fill" cx="70" cy="70" r="60"
+            stroke-dasharray="377" stroke-dashoffset="377"></circle>
+        </svg>
+        <div class="donut-text" id="practice-donut-text">0%</div>
+      </div>
+      <div class="result-meta">
+        <div class="meta-item meta-correct"><div class="meta-num" id="practice-meta-correct">0</div><div class="meta-label">答对</div></div>
+        <div class="meta-item meta-wrong"><div class="meta-num" id="practice-meta-wrong">0</div><div class="meta-label">答错</div></div>
+      </div>
+    </div>
+    <div class="center" style="margin-top: 24px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="startPractice()">重新刷题</button>
+      <button class="btn btn-secondary" onclick="goHome()">返回首页</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const ALL_QUESTIONS = [{"id":1,"question":"在测试过程中，发现同事违反了测试规范，应该(????????)。","options":[{"key":"A","text":"直接告诉同事并帮助其改正"},{"key":"B","text":"忽视该问题，认为与自己无关"},{"key":"C","text":"向上级报告并等待上级处理"},{"key":"D","text":"私下与同事讨论，不公开提及"}],"answer":"A","type":"single"},{"id":2,"question":"测试人员在接口测试中发现了一个严重的性能问题，但是项目即将上线，正确的做法是(????????)。","options":[{"key":"A","text":"忽略该问题，因为项目已经到了上线阶段"},{"key":"B","text":"立即通知项目管理者和开发人员，并提供详细的复现步骤"},{"key":"C","text":"将问题记录在测试报告中，等待下一版本修复"},{"key":"D","text":"私下与开发人员沟通，避免影响项目进度"}],"answer":"B","type":"single"},{"id":3,"question":"在计算机中，操作系统的主要功能不包括(????????)。","options":[{"key":"A","text":"管理计算机硬件和软件资源"},{"key":"B","text":"提供用户界面"},{"key":"C","text":"进行科学计算"},{"key":"D","text":"控制程序的执行"}],"answer":"C","type":"single"},{"id":4,"question":"在计算机中，用于临时存储数据和程序，供CPU快速访问的部件是(????????)。","options":[{"key":"A","text":"硬盘"},{"key":"B","text":"内存"},{"key":"C","text":"光盘"},{"key":"D","text":"缓存"}],"answer":"B","type":"single"},{"id":5,"question":"在计算机网络中，用于连接不同设备并传输数据的设备是(????????)。","options":[{"key":"A","text":"路由器"},{"key":"B","text":"服务器"},{"key":"C","text":"打印机"},{"key":"D","text":"显示器"}],"answer":"A","type":"single"},{"id":6,"question":"软件测试的目标之一是(????????)。","options":[{"key":"A","text":"证明软件没有任何缺陷"},{"key":"B","text":"改进软件质量"},{"key":"C","text":"完成尽早发布软件"},{"key":"D","text":"验证代码是否符合编码标准"}],"answer":"B","type":"single"},{"id":7,"question":"在计算机中，一个字节由(????????)位二进制数组成。","options":[{"key":"A","text":"4"},{"key":"B","text":"8"},{"key":"C","text":"16"},{"key":"D","text":"32"}],"answer":"B","type":"single"},{"id":8,"question":"在进行压力测试时，以下(????????)做法是不正确的?","options":[{"key":"A","text":"逐渐增加并发用户数"},{"key":"B","text":"保持测试环境稳定"},{"key":"C","text":"忽略测试过程中的异常现象"},{"key":"D","text":"记录并分析测试数据"}],"answer":"C","type":"single"},{"id":9,"question":"接口测试中，提前设计好测试数据的目的是为了(????????)。","options":[{"key":"A","text":"增加测试的复杂性"},{"key":"B","text":"确保测试的全面性和深入性"},{"key":"C","text":"延长测试的时间"},{"key":"D","text":"减少测试的工作量"}],"answer":"B","type":"single"},{"id":10,"question":"如果一个判定中的复合条件表达式为(A>1)or(B\u003c=3)，则为了达到100%的条件覆盖率，测试准备时至少需要设计(????????)个测试用例?","options":[{"key":"A","text":"3"},{"key":"B","text":"1"},{"key":"C","text":"2"},{"key":"D","text":"4"}],"answer":"C","type":"single"},{"id":11,"question":"在某大学学籍管理信息系统中，假设学生年龄的输入范围为16~40，则在用例设计阶段，根据黑盒测试中的等价类划分技术，下面划分正确的是(????????)。","options":[{"key":"A","text":"可划分为1个有效等价类，1个无效等价类"},{"key":"B","text":"可划分为2个有效等价类，1个无效等价类"},{"key":"C","text":"可划分为1个有效等价类，2个无效等价类"},{"key":"D","text":"可划分为2个有效等价类，2个无效等价类"}],"answer":"C","type":"single"},{"id":12,"question":"软件质量评估的主要目的是(????????)。","options":[{"key":"A","text":"提高开发速度"},{"key":"B","text":"降低开发成本"},{"key":"C","text":"衡量软件的质量水平"},{"key":"D","text":"增加软件功能"}],"answer":"C","type":"single"},{"id":13,"question":"根据《中华人民共和国产品质量法》，生产者对其生产的产品质量负(????????)。","options":[{"key":"A","text":"有限责任"},{"key":"B","text":"无限责任"},{"key":"C","text":"担保责任"},{"key":"D","text":"连带责任"}],"answer":"B","type":"single"},{"id":14,"question":"下列关于计算机病毒的说法，正确的是(????????)。","options":[{"key":"A","text":"计算机病毒是一种生物病毒"},{"key":"B","text":"计算机病毒发作后，将造成计算机硬件永久性的物理损坏"},{"key":"C","text":"计算机病毒是一种通过自我复制进行传染的，破坏计算机程序和数据的小程序"},{"key":"D","text":"计算机病毒传染的主要途径是磁盘与网络"}],"answer":"D","type":"single"},{"id":15,"question":"测试人员在准备测试数据时，应遵循的原则是(????????)。","options":[{"key":"A","text":"避免使用重复数据"},{"key":"B","text":"仅使用最小数据集"},{"key":"C","text":"尽可能使用真实数据"},{"key":"D","text":"忽略数据的一致性"}],"answer":"C","type":"single"},{"id":16,"question":"在 CPU 中，(????????)不仅要保证指令的正确执行，还要能够处理异常事件。","options":[{"key":"A","text":"运算器"},{"key":"B","text":"控制器"},{"key":"C","text":"寄存器组"},{"key":"D","text":"内部总线"}],"answer":"B","type":"single"},{"id":17,"question":"(????????)不属于按寻址方式划分的一类存储器?","options":[{"key":"A","text":"随机存储器"},{"key":"B","text":"顺序存储器"},{"key":"C","text":"相联存储器"},{"key":"D","text":"直接存储器"}],"answer":"C","type":"single"},{"id":18,"question":"以下结构中(????????)不属于程序的基本控制结构?","options":[{"key":"A","text":"顺序结构"},{"key":"B","text":"分支结构"},{"key":"C","text":"循环结构"},{"key":"D","text":"递归结构"}],"answer":"D","type":"single"},{"id":19,"question":"可用于编写独立程序和快速脚本的语言是(????????)。","options":[{"key":"A","text":"Python"},{"key":"B","text":"Prolog"},{"key":"C","text":"Java"},{"key":"D","text":"C#"}],"answer":"A","type":"single"},{"id":20,"question":"下列安全协议中，与 TLS 最接近的协议是(????????)。","options":[{"key":"A","text":"PGP"},{"key":"B","text":"SSL"},{"key":"C","text":"HTTPS"},{"key":"D","text":"IPSec"}],"answer":"B","type":"single"},{"id":21,"question":"在进行压力测试时，如果系统的响应时间突然增加，这可能表示(????????)。","options":[{"key":"A","text":"系统运行正常"},{"key":"B","text":"系统负载过低"},{"key":"C","text":"系统可能存在性能瓶颈"},{"key":"D","text":"测试环境配置错误"}],"answer":"C","type":"single"},{"id":22,"question":"在Windows操作系统中，打开“运行”对话框的快捷键是(????????)。","options":[{"key":"A","text":"Win + R"},{"key":"B","text":"Win + E"},{"key":"C","text":"Win + D"},{"key":"D","text":"Win + F"}],"answer":"A","type":"single"},{"id":23,"question":"在测试实施阶段，如果接口返回了状态码500，这意味着(????????)。","options":[{"key":"A","text":"客户端请求错误"},{"key":"B","text":"服务器内部错误"},{"key":"C","text":"资源未找到"},{"key":"D","text":"服务器拒绝请求"}],"answer":"B","type":"single"},{"id":24,"question":"下列协议中与 Email 应用无关的是(????????)。","options":[{"key":"A","text":"MIME"},{"key":"B","text":"SMTP"},{"key":"C","text":"POP3"},{"key":"D","text":"Telnet"}],"answer":"D","type":"single"},{"id":25,"question":"在进行容量测试时，以下(????????)做法是正确的。","options":[{"key":"A","text":"逐步增加系统的负载直到达到性能极限"},{"key":"B","text":"忽略系统的响应时间"},{"key":"C","text":"使用真实用户数据进行测试"},{"key":"D","text":"只测试系统的最大负载能力"}],"answer":"A","type":"single"},{"id":26,"question":"软件工程的基本要素包括方法、工具和(????????)。","options":[{"key":"A","text":"软件系统"},{"key":"B","text":"硬件环境"},{"key":"C","text":"过程"},{"key":"D","text":"人员"}],"answer":"C","type":"single"},{"id":27,"question":"计算机网络最突出的优点是(????????)。","options":[{"key":"A","text":"运算速度快"},{"key":"B","text":"运算精度高"},{"key":"C","text":"共享资源"},{"key":"D","text":"内存容量大"}],"answer":"C","type":"single"},{"id":28,"question":"电子邮件地址的一般格式为(????????)。","options":[{"key":"A","text":"用户名@域名"},{"key":"B","text":"域名@用户名"},{"key":"C","text":"IP地址@域名"},{"key":"D","text":"域名@IP地址"}],"answer":"A","type":"single"},{"id":29,"question":"下列关于计算机硬件的说法，错误的是(????????)。","options":[{"key":"A","text":"CPU是计算机的核心部件"},{"key":"B","text":"内存储器用于暂时存放CPU中的运算数据"},{"key":"C","text":"硬盘属于计算机的外存储器"},{"key":"D","text":"键盘是计算机的输出设备"}],"answer":"D","type":"single"},{"id":30,"question":"计算机中用来表示存储空间大小的最基本单位是(????????)。","options":[{"key":"A","text":"位"},{"key":"B","text":"字节"},{"key":"C","text":"字"},{"key":"D","text":"字长"}],"answer":"B","type":"single"},{"id":31,"question":"在测试实施阶段，测试团队应该关注(????????)任务。","options":[{"key":"A","text":"需求分析"},{"key":"B","text":"测试计划制定"},{"key":"C","text":"测试用例设计"},{"key":"D","text":"测试环境搭建"}],"answer":"D","type":"single"},{"id":32,"question":"测试实施阶段，测试用例的执行应该基于(????????)原则。","options":[{"key":"A","text":"随意执行"},{"key":"B","text":"根据风险和优先级"},{"key":"C","text":"按照用例编号顺序"},{"key":"D","text":"仅执行高风险用例"}],"answer":"B","type":"single"},{"id":33,"question":"在计算机中，信息的最小单位是(????????)。","options":[{"key":"A","text":"位"},{"key":"B","text":"字节"},{"key":"C","text":"字"},{"key":"D","text":"双字"}],"answer":"A","type":"single"},{"id":34,"question":"与设计测试用例无关的文档是(????????)。","options":[{"key":"A","text":"源程序"},{"key":"B","text":"软件需求规格说明书"},{"key":"C","text":"设计说明书"},{"key":"D","text":"软件开发计划"}],"answer":"D","type":"single"},{"id":35,"question":"使用软件测试工具的目的不包括(????????)。","options":[{"key":"A","text":"提高设计质量"},{"key":"B","text":"节省测试时间"},{"key":"C","text":"辅助测试寻找问题"},{"key":"D","text":"协助问题的诊断"}],"answer":"A","type":"single"},{"id":36,"question":"对已经发现的错误进行错误定位和确定出错性质，并改正这些错误，同时修改相关的文档，这种行为属于(????????)。","options":[{"key":"A","text":"回归测试"},{"key":"B","text":"调试"},{"key":"C","text":"单元测试"},{"key":"D","text":"测试"}],"answer":"B","type":"single"},{"id":37,"question":"实施需求说明书评测时，应检测(????????)。\n①系统定义的目标是否与用户的要求一致\n②被开发项目的数据流与数据结构是否足够、确定\n③软件的行为和它必须处理的信息，必须完成的功能是否一致;\n④主要功能是否已包含在规定的软件范围之内，是否都已充分说明\n⑤确认软件的内部接口与外部接口是否已明确定义","options":[{"key":"A","text":"①②④⑤"},{"key":"B","text":"②③⑤"},{"key":"C","text":"①③⑤"},{"key":"D","text":"①②③④"}],"answer":"D","type":"single"},{"id":38,"question":"性能测试中发现系统响应时间过长，首先应该检查(????????)。","options":[{"key":"A","text":"网络带宽"},{"key":"B","text":"用户操作"},{"key":"C","text":"数据库性能"},{"key":"D","text":"系统外观"}],"answer":"A","type":"single"},{"id":39,"question":"测试结果记录中最重要的是(????????)。","options":[{"key":"A","text":"测试对象的详细描述"},{"key":"B","text":"测试结果的量化数据"},{"key":"C","text":"测试方法的详细说明"},{"key":"D","text":"测试环境的描述"}],"answer":"B","type":"single"},{"id":40,"question":"当测试结果出现异常时(????????)。","options":[{"key":"A","text":"先进行进一步分析"},{"key":"B","text":"立即通知相关人员"},{"key":"C","text":"尝试解决问题后再通知相关人员"},{"key":"D","text":"忽略异常，等待下一次测试"}],"answer":"B","type":"single"},{"id":41,"question":"局域网常用的网络拓扑结构是(????????)。","options":[{"key":"A","text":"星型和环型"},{"key":"B","text":"总线型、星型和树型"},{"key":"C","text":"总线型、星型和环型"},{"key":"D","text":"总线型和树型"}],"answer":"C","type":"single"},{"id":42,"question":"在进行接口测试前，测试人员应该(????????)。","options":[{"key":"A","text":"等待开发人员完成所有功能的开发"},{"key":"B","text":"仅依赖开发人员提供的接口文档"},{"key":"C","text":"编写详细的测试用例和准备测试数据"},{"key":"D","text":"忽略接口文档，直接进行测试"}],"answer":"C","type":"single"},{"id":43,"question":"在性能测试中，如果发现系统的CPU使用率过高，首先应该检查(????????)。","options":[{"key":"A","text":"系统日志"},{"key":"B","text":"网络带宽"},{"key":"C","text":"代码效率"},{"key":"D","text":"用户操作"}],"answer":"C","type":"single"},{"id":44,"question":"性能测试报告中最重要的是(????????)内容?","options":[{"key":"A","text":"测试环境描述"},{"key":"B","text":"测试执行过程"},{"key":"C","text":"测试结果分析和建议"},{"key":"D","text":"测试人员名单"}],"answer":"C","type":"single"},{"id":45,"question":"实施接口测试时，如果接口返回状态码404时，这意味着(????????)。","options":[{"key":"A","text":"请求的资源不存在"},{"key":"B","text":"服务器无法处理请求"},{"key":"C","text":"客户端提交的表单数据格式不正确"},{"key":"D","text":"服务器内部错误"}],"answer":"A","type":"single"},{"id":46,"question":"在接口测试中，测试环境的搭建应该包括(????????)方面?","options":[{"key":"A","text":"模拟真实的生产环境"},{"key":"B","text":"使用与生产环境相同的数据库"},{"key":"C","text":"确保网络环境与生产环境一致"},{"key":"D","text":"所有选项都是"}],"answer":"D","type":"single"},{"id":47,"question":"在接口测试实施过程中，(????????)可能表明接口存在性能问题?","options":[{"key":"A","text":"响应时间超过预期"},{"key":"B","text":"接口返回错误的数据"},{"key":"C","text":"接口无法处理大量并发请求"},{"key":"D","text":"所有选项都是"}],"answer":"D","type":"single"},{"id":48,"question":"在性能测试实施时，发现系统的吞吐量下降，可能的原因是(????????)。","options":[{"key":"A","text":"用户数量增加"},{"key":"B","text":"网络速度提升"},{"key":"C","text":"代码质量提高"},{"key":"D","text":"系统资源不足"}],"answer":"D","type":"single"},{"id":49,"question":"测试结果记录的首要目的是(????????)。","options":[{"key":"A","text":"证明软件质量"},{"key":"B","text":"追踪缺陷修复进度"},{"key":"C","text":"提供测试过程的详细文档"},{"key":"D","text":"评估测试团队的绩效"}],"answer":"C","type":"single"},{"id":50,"question":"在实施压力测试时，发现系统崩溃，首先应该检查(????????)。","options":[{"key":"A","text":"网络带宽"},{"key":"B","text":"用户操作记录"},{"key":"C","text":"系统日志"},{"key":"D","text":"代码注释"}],"answer":"C","type":"single"},{"id":51,"question":"使用SoapUI进行接口测试时，(????????)功能可以帮助模拟多个并发请求?","options":[{"key":"A","text":"断点"},{"key":"B","text":"测试用例"},{"key":"C","text":"测试套件"},{"key":"D","text":"负载测试"}],"answer":"D","type":"single"},{"id":52,"question":"在性能测试实施中，最可能导致系统响应时间延长是(????????)因素?","options":[{"key":"A","text":"用户界面优化"},{"key":"B","text":"硬件资源不足"},{"key":"C","text":"代码逻辑简单"},{"key":"D","text":"网络延迟降低"}],"answer":"B","type":"single"},{"id":53,"question":"如果接口返回状态码403，这意味着(????????)。","options":[{"key":"A","text":"服务器理解请求但拒绝执行"},{"key":"B","text":"请求的资源不存在"},{"key":"C","text":"请求的方法不被允许"},{"key":"D","text":"客户端请求格式错误"}],"answer":"A","type":"single"},{"id":54,"question":"在性能测试中，(????????)模拟大量用户并发操作。","options":[{"key":"A","text":"使用多个用户账户同时操作"},{"key":"B","text":"使用性能测试工具生成并发请求"},{"key":"C","text":"增加服务器的硬件配置"},{"key":"D","text":"提高网络带宽"}],"answer":"B","type":"single"},{"id":55,"question":"在压力测试实施过程中，如果发现系统的响应时间持续上升，可能是(????????)。","options":[{"key":"A","text":"系统负载过高"},{"key":"B","text":"网络带宽增加"},{"key":"C","text":"系统资源充足"},{"key":"D","text":"并发用户数减少"}],"answer":"A","type":"single"},{"id":56,"question":"接口测试中，如果接口返回状态码409，这意味着(????????)。","options":[{"key":"A","text":"服务器内部错误"},{"key":"B","text":"请求超时"},{"key":"C","text":"请求冲突，因为资源已被锁定"},{"key":"D","text":"客户端请求格式错误"}],"answer":"C","type":"single"},{"id":57,"question":"性能测试实施时，(????????)需要对测试数据进行清理和预处理。","options":[{"key":"A","text":"为了增加并发用户数"},{"key":"B","text":"为了确保测试结果的准确性"},{"key":"C","text":"为了模拟真实用户行为"},{"key":"D","text":"为了提高系统性能"}],"answer":"B","type":"single"},{"id":58,"question":"在接口测试中，(????????)操作不是用于验证请求的?","options":[{"key":"A","text":"检查请求头"},{"key":"B","text":"检查请求体"},{"key":"C","text":"检查请求的URL"},{"key":"D","text":"检查数据库的更新情况"}],"answer":"D","type":"single"},{"id":59,"question":"在进行性能测试时，(????????)需要记录测试过程中的日志信息?","options":[{"key":"A","text":"为了方便调试代码"},{"key":"B","text":"为了评估系统的安全性"},{"key":"C","text":"为了分析系统性能瓶颈"},{"key":"D","text":"为了满足用户需求"}],"answer":"C","type":"single"},{"id":60,"question":"在实施性能测试中，如果发现系统的CPU利用率持续很高，可能是(????????)原因?","options":[{"key":"A","text":"系统资源充足"},{"key":"B","text":"系统存在性能瓶颈"},{"key":"C","text":"系统负载过低"},{"key":"D","text":"网络带宽不足"}],"answer":"B","type":"single"},{"id":61,"question":"在测试实施过程中，下列关于软件缺陷处理说法错误的是(????????)。","options":[{"key":"A","text":"需要如实报告缺陷"},{"key":"B","text":"已经关闭的缺陷可能会由于某种原因而重新打开"},{"key":"C","text":"如果发现的缺陷全部属于同一个开发人员，则这些缺陷可以写在同一个缺陷报告中"},{"key":"D","text":"缺陷的严重度会根据项目的发展而发生变化"}],"answer":"C","type":"single"},{"id":62,"question":"在接口测试中，以下(????????)操作不是用于验证接口响应的?","options":[{"key":"A","text":"检查响应状态码"},{"key":"B","text":"检查响应头信息"},{"key":"C","text":"检查响应体结构"},{"key":"D","text":"检查服务器的CPU使用率"}],"answer":"D","type":"single"},{"id":63,"question":"在进行压力测试时，我们通常关注(????????)指标?","options":[{"key":"A","text":"响应时间"},{"key":"B","text":"并发用户数"},{"key":"C","text":"吞吐量"},{"key":"D","text":"资源利用率"}],"answer":"B","type":"single"},{"id":64,"question":"在性能测试报告中，我们通常不包含(????????)内容?","options":[{"key":"A","text":"代码实现细节"},{"key":"B","text":"测试环境描述"},{"key":"C","text":"测试数据分析"},{"key":"D","text":"测试结论和建议"}],"answer":"A","type":"single"},{"id":65,"question":"在性能测试中，我们(????????)确定系统的最大负载能力?","options":[{"key":"A","text":"通过观察系统的响应时间"},{"key":"B","text":"通过查看系统的日志文件"},{"key":"C","text":"通过逐步增加并发用户数直到系统崩溃"},{"key":"D","text":"通过分析系统的资源利用率"}],"answer":"D","type":"single"},{"id":66,"question":"性能测试准备阶段，(????????)确定测试的数据量和类型?","options":[{"key":"A","text":"根据业务需求随机选择"},{"key":"B","text":"根据系统特点自定义"},{"key":"C","text":"使用行业标准数据"},{"key":"D","text":"根据测试人员经验决定"}],"answer":"C","type":"single"},{"id":67,"question":"使用SoapUI进行接口测试时，(????????)功能可以帮助测试人员模拟服务端行为?","options":[{"key":"A","text":"Mock Service"},{"key":"B","text":"TestRunner"},{"key":"C","text":"Endpoint Configuration"},{"key":"D","text":"Project Configuration"}],"answer":"A","type":"single"},{"id":68,"question":"某测试人员通过执行测试软件的方法对当前功能进行了测试，该测试人员使用的测试方法为(????????)。","options":[{"key":"A","text":"系统测试"},{"key":"B","text":"静态测试"},{"key":"C","text":"黑盒测试"},{"key":"D","text":"单元测试"}],"answer":"C","type":"single"},{"id":69,"question":"若某计算机采用 8 位整数补码表示数据，则(????????)运算将产生溢出?","options":[{"key":"A","text":"127+1"},{"key":"B","text":"-127-1"},{"key":"C","text":"-127+1"},{"key":"D","text":"127-1"}],"answer":"A","type":"single"},{"id":70,"question":"测试人员在发现接口数据泄露的潜在风险时，不应该(????????)。","options":[{"key":"A","text":"忽视该风险，继续其他测试任务"},{"key":"B","text":"私下通知开发人员，避免引起恐慌"},{"key":"C","text":"立即报告给项目经理和相关安全团队"},{"key":"D","text":"仅在测试报告中提及，不采取其他措施"},{"key":"E","text":"立即停止测试"}],"answer":"ABDE","type":"multiple"},{"id":71,"question":"软件评审作为质量控制的一个重要手段，已经被业界广泛使用。评审分为内部评审和外部评审。关于内部评审的叙述，正确的为(????????)。","options":[{"key":"A","text":"对软件的每个开发阶段都要进行内部评审"},{"key":"B","text":"评审人员由软件开发组、质量管理和配置管理人员组成，也可邀请用户参与"},{"key":"C","text":"评审人数根据实际情况确定，比如根据软件的规模等级和安全性等级等指标而定"},{"key":"D","text":"内部评审由用户单位主持，由信息系统建设单位组织，应成立评审委员会"},{"key":"E","text":"内部评审只是形式上的检查，不需要深入检查代码或设计。"}],"answer":"ABC","type":"multiple"},{"id":72,"question":"接口测试准备阶段，可以考虑使用(????????)工具进行接口测试?","options":[{"key":"A","text":"Git"},{"key":"B","text":"JMeter"},{"key":"C","text":"Postman"},{"key":"D","text":"SoapUIE、Selenium"}],"answer":"BCD","type":"multiple"},{"id":73,"question":"在实施性能测试时，通常需要模拟(????????)类型的用户行为?","options":[{"key":"A","text":"无思考时间"},{"key":"B","text":"正常操作"},{"key":"C","text":"异常操作"},{"key":"D","text":"批量操作"},{"key":"E","text":"长时间操作"}],"answer":"BCDE","type":"multiple"},{"id":74,"question":"测试人员在实施接口测试时，需要验证(????????)方面?","options":[{"key":"A","text":"响应状态码是否正确"},{"key":"B","text":"响应时间是否在可接受范围内"},{"key":"C","text":"响应数据格式是否符合预期"},{"key":"D","text":"接口的安全性"},{"key":"E","text":"用户界面的可用性"}],"answer":"ABCD","type":"multiple"},{"id":75,"question":"在记录接口测试结果时，以下(????????)信息是重要的?","options":[{"key":"A","text":"测试人员的个人评价和建议"},{"key":"B","text":"测试用例的描述和预期结果"},{"key":"C","text":"实际响应状态码和响应数据"},{"key":"D","text":"测试执行的时间和日期"},{"key":"E","text":"缺陷的严重性和影响范围"}],"answer":"BCDE","type":"multiple"},{"id":76,"question":"以下(????????)措施有助于提高接口测试结果记录的质量?","options":[{"key":"A","text":"使用标准化的模板记录测试结果"},{"key":"B","text":"定期进行结果审查和验证"},{"key":"C","text":"及时更新和维护测试文档"},{"key":"D","text":"简单记录数据"},{"key":"E","text":"手动录入所有测试数据"}],"answer":"ABC","type":"multiple"},{"id":77,"question":"(????????)因素可能会影响测试结果记录的准确性?","options":[{"key":"A","text":"测试用例设计的质量"},{"key":"B","text":"测试执行人员的专业性"},{"key":"C","text":"测试环境的稳定性"},{"key":"D","text":"测试计划的详尽程度"},{"key":"E","text":"测试工具的准确性"}],"answer":"BCD","type":"multiple"},{"id":78,"question":"测试结果记录中，(????????)信息对于性能测试分析尤为重要?","options":[{"key":"A","text":"响应时间"},{"key":"B","text":"吞吐量"},{"key":"C","text":"资源利用率"},{"key":"D","text":"用户操作步骤"},{"key":"E","text":"错误率"}],"answer":"ABCE","type":"multiple"},{"id":79,"question":"在接口测试准备阶段，测试人员需要关注的方面包括(????????)。","options":[{"key":"A","text":"确定测试目标和范围"},{"key":"B","text":"编写详细的测试用例"},{"key":"C","text":"配置和设置测试环境"},{"key":"D","text":"学习相关的编程语言"},{"key":"E","text":"设计测试数据和场景"}],"answer":"ABCE","type":"multiple"},{"id":80,"question":"项目立项前测试人员不需要提交任何工件。(????????)\n答案： 正确","options":[],"answer":"","type":"single"},{"id":81,"question":"计算机程序的基本结构包括顺序结构、循环结构和分支结构。(????????)\n答案： 正确","options":[],"answer":"","type":"single"},{"id":82,"question":"软件测试员可以对产品说明书进行白盒测试。(????????)\n答案： 错误","options":[],"answer":"","type":"single"},{"id":83,"question":"TCP/IP协议栈中的网络层负责数据的可靠传输。(????????)\n答案： 错误","options":[],"answer":"","type":"single"},{"id":84,"question":"软件测试是独立于软件开发的一个工作。(????????)\n答案： 错误","options":[],"answer":"","type":"single"},{"id":85,"question":"计算机硬件包括CPU、内存、硬盘等，但不包括操作系统。(????????)\n答案： 正确","options":[],"answer":"","type":"single"},{"id":86,"question":"自动化测试可能延误项目进度。(????????)\n答案： 正确","options":[],"answer":"","type":"single"},{"id":87,"question":"测试人员要坚持原则，缺陷未修复完坚决不予通过。(????????)\n答案： 错误","options":[],"answer":"","type":"single"},{"id":88,"question":"没有发现错误的测试是没有价值的。(????????)\n答案： 正确","options":[],"answer":"","type":"single"},{"id":89,"question":"软件产品首要满足的是功能需求。(????????)\n答案： 正确","options":[],"answer":"","type":"single"},{"id":90,"question":"测试工程师在发现软件中的重大缺陷时，应该首先(????????)。","options":[{"key":"A","text":"尝试自己修复"},{"key":"B","text":"私下告诉开发人员"},{"key":"C","text":"报告给项目经理或负责人"},{"key":"D","text":"忽略它，因为这不是测试工程师的职责"}],"answer":"C","type":"single"},{"id":91,"question":"当发现所使用的测试工具存在非法授权问题时，应该(????????)","options":[{"key":"A","text":"立即停止使用并报告给相关部门"},{"key":"B","text":"继续使用，不向任何人报告"},{"key":"C","text":"自行寻找合法授权方式"},{"key":"D","text":"告知同事一起使用该工具"}],"answer":"A","type":"single"},{"id":92,"question":"以下关于拒绝服务攻击的叙述中，不正确的是(????????)。","options":[{"key":"A","text":"拒绝服务攻击的目的是使计算机或者网络无法提供正常的服务"},{"key":"B","text":"拒绝服务攻击是不断向计算机发起请求来实现的"},{"key":"C","text":"拒绝服务攻击会造成用户密码的泄漏"},{"key":"D","text":"DDoS 是一种拒绝服务攻击形式"}],"answer":"C","type":"single"},{"id":93,"question":"甲公司接受乙公司委托开发了一项应用软件,双方没有签订任何书面合同。在此情形下，享有该软件的著作权为(????????)。","options":[{"key":"A","text":"甲公司"},{"key":"B","text":"甲、乙公司协商"},{"key":"C","text":"乙公司"},{"key":"D","text":"甲、乙公司均不"}],"answer":"A","type":"single"},{"id":94,"question":"在进行性能测试时，(????????)步骤是必不可少的?","options":[{"key":"A","text":"确定测试目标"},{"key":"B","text":"编写测试用例"},{"key":"C","text":"搭建测试环境"},{"key":"D","text":"分析测试结果"}],"answer":"D","type":"single"},{"id":95,"question":"在HTTP协议中，GET请求通常用于(????????)。","options":[{"key":"A","text":"创建资源"},{"key":"B","text":"更新资源"},{"key":"C","text":"删除资源"},{"key":"D","text":"查询资源"}],"answer":"D","type":"single"},{"id":96,"question":"在接口测试中，通常使用(????????)HTTP状态码表示请求成功?","options":[{"key":"A","text":"301"},{"key":"B","text":"404"},{"key":"C","text":"200"},{"key":"D","text":"500"}],"answer":"C","type":"single"},{"id":97,"question":"计算机病毒是一种(????????)。","options":[{"key":"A","text":"微生物感染"},{"key":"B","text":"电磁波污染"},{"key":"C","text":"程序"},{"key":"D","text":"放射线"}],"answer":"C","type":"single"},{"id":98,"question":"在软件开发过程中，详细设计的内容不包括(????????)。","options":[{"key":"A","text":"软件体系结构"},{"key":"B","text":"算法"},{"key":"C","text":"数据结构"},{"key":"D","text":"数据库物理结构"}],"answer":"A","type":"single"},{"id":99,"question":"微型计算机的主机包括(????????)。","options":[{"key":"A","text":"运算器和控制器"},{"key":"B","text":"CPU和内存储器"},{"key":"C","text":"CPU、内存储器和硬盘"},{"key":"D","text":"CPU、内存储器和显示器"}],"answer":"B","type":"single"},{"id":100,"question":"性能测试报告中，通常包含(????????)内容?","options":[{"key":"A","text":"测试环境描述、测试数据、测试结果和测试结论"},{"key":"B","text":"系统功能列表、代码质量和用户体验"},{"key":"C","text":"测试执行人员、测试时间和测试地点"},{"key":"D","text":"系统架构图、流程图和数据模型"}],"answer":"A","type":"single"},{"id":101,"question":"以下几种白盒覆盖测试中，覆盖准则最强的是(????????)。","options":[{"key":"A","text":"语句覆盖"},{"key":"B","text":"判定覆盖"},{"key":"C","text":"条件覆盖"},{"key":"D","text":"条件组合覆盖"}],"answer":"D","type":"single"},{"id":102,"question":"以下属于动态测试方法的是(????????)。","options":[{"key":"A","text":"代码审查"},{"key":"B","text":"静态结构测试"},{"key":"C","text":"路径覆盖"},{"key":"D","text":"技术评审"}],"answer":"C","type":"single"},{"id":103,"question":"以下测试方法中，不属于典型安全性测试的是(????????)。","options":[{"key":"A","text":"安全功能验证"},{"key":"B","text":"漏洞扫描"},{"key":"C","text":"通信加密"},{"key":"D","text":"模拟攻击试验"}],"answer":"C","type":"single"},{"id":104,"question":"在接口测试准备阶段，以下哪项不是必要的(????????)。","options":[{"key":"A","text":"确定测试目标"},{"key":"B","text":"了解接口规范"},{"key":"C","text":"编写代码"},{"key":"D","text":"设计测试场景"}],"answer":"C","type":"single"},{"id":105,"question":"某软件公司的软件产品注册商标为 M ，为确保公司在市场竞争中占据优势，对员工进行了保密约束。此情形下该公司不享有(????????)","options":[{"key":"A","text":"商业秘密权"},{"key":"B","text":"著作权"},{"key":"C","text":"专利权"},{"key":"D","text":"商标权"}],"answer":"C","type":"single"},{"id":106,"question":"软件评价过程的特性不包括(????????)","options":[{"key":"A","text":"正确性"},{"key":"B","text":"可重复性"},{"key":"C","text":"可再现性"},{"key":"D","text":"客观性"}],"answer":"A","type":"single"},{"id":107,"question":"在进行压力测试时，发现系统的错误率急剧上升，最可能的原因是(????????)。","options":[{"key":"A","text":"用户数增加"},{"key":"B","text":"系统资源充足"},{"key":"C","text":"网络带宽提高"},{"key":"D","text":"系统存在性能瓶颈"}],"answer":"B","type":"single"},{"id":108,"question":"(????????)不是计算机网络的基本要素?","options":[{"key":"A","text":"计算机"},{"key":"B","text":"传输介质"},{"key":"C","text":"网络协议"},{"key":"D","text":"打印机"}],"answer":"D","type":"single"},{"id":109,"question":"在测试实施阶段，(????????)工作有助于提升测试质量?","options":[{"key":"A","text":"减少测试用例的数量"},{"key":"B","text":"加快测试执行的速度"},{"key":"C","text":"加强对测试结果的审查"},{"key":"D","text":"简化测试环境的搭建"}],"answer":"C","type":"single"},{"id":110,"question":"在测试实施阶段，测试团队应该确保(????????)。","options":[{"key":"A","text":"所有功能都已实现"},{"key":"B","text":"所有缺陷都已修复"},{"key":"C","text":"测试进度与计划一致"},{"key":"D","text":"用户手册已完成"}],"answer":"C","type":"single"},{"id":111,"question":"当测试结果中存在大量失败项时，测试团队应首先(????????)。","options":[{"key":"A","text":"报告给项目经理"},{"key":"B","text":"停止测试并修复缺陷"},{"key":"C","text":"分析失败原因并制定改进方案"},{"key":"D","text":"延长测试时间以获取更多结果"}],"answer":"C","type":"single"},{"id":112,"question":"为了提高计算机磁盘存取效率，通常可以(????????)。","options":[{"key":"A","text":"利用磁盘格式化程序，定期对 ROM 进行碎片整理"},{"key":"B","text":"利用磁盘碎片整理程序，定期对内存进行碎片整理"},{"key":"C","text":"利用磁盘碎片整理程序，定期对磁盘进行碎片整理"},{"key":"D","text":"利用磁盘格式化程序，定期对磁盘进行碎片整理"}],"answer":"C","type":"single"},{"id":113,"question":"安全的电子邮件协议为(????????)。","options":[{"key":"A","text":"MIME"},{"key":"B","text":"PGP"},{"key":"C","text":"POP3"},{"key":"D","text":"SMTP"}],"answer":"B","type":"single"},{"id":114,"question":"在测试执行过程中，测试人员发现了一个新的缺陷，应该(????????)。","options":[{"key":"A","text":"立即停止测试"},{"key":"B","text":"忽略该缺陷，继续测试"},{"key":"C","text":"记录缺陷并继续测试"},{"key":"D","text":"自行修复该缺陷"}],"answer":"C","type":"single"},{"id":115,"question":"在进行集成测试时，测试团队主要关注的是(????????)。","options":[{"key":"A","text":"单个功能的正确性"},{"key":"B","text":"模块之间的接口和交互"},{"key":"C","text":"系统的整体性能和稳定性"},{"key":"D","text":"用户的操作体验"}],"answer":"B","type":"single"},{"id":116,"question":"属于 CPU 中算术逻辑单元的部件是(????????)。","options":[{"key":"A","text":"程序计数器"},{"key":"B","text":"加法器"},{"key":"C","text":"指令寄存器"},{"key":"D","text":"指令译码器"}],"answer":"B","type":"single"},{"id":117,"question":"在进程状态转换过程中，可能会引起进程阻塞的原因是(????????)。","options":[{"key":"A","text":"时间片到"},{"key":"B","text":"执行 V 操作"},{"key":"C","text":"I/O 完成"},{"key":"D","text":"执行 P 操作"}],"answer":"D","type":"single"},{"id":118,"question":"在Windows中，同时按下(????????)键，可以打开“任务管理器”。","options":[{"key":"A","text":"Ctrl + Alt + Delete"},{"key":"B","text":"Ctrl + Shift + Delete"},{"key":"C","text":"Alt + Shift + Delete"},{"key":"D","text":"Alt + Shift + Enter"}],"answer":"A","type":"single"},{"id":119,"question":"在测试实施过程中，测试人员应(????????)对待测试用例?","options":[{"key":"A","text":"随意修改"},{"key":"B","text":"严格执行"},{"key":"C","text":"仅执行部分"},{"key":"D","text":"忽略执行"}],"answer":"B","type":"single"},{"id":120,"question":"在性能测试中，(????????)要监控系统的各项性能指标?","options":[{"key":"A","text":"为了找出系统的缺陷"},{"key":"B","text":"为了满足客户的需求"},{"key":"C","text":"为了确保系统的稳定性和可靠性"},{"key":"D","text":"为了提高系统的代码质量"}],"answer":"C","type":"single"},{"id":121,"question":"使用Postman进行接口测试时，(????????)功能是Postman不支持的?","options":[{"key":"A","text":"发送HTTP请求"},{"key":"B","text":"保存和分享请求"},{"key":"C","text":"执行自动化测试脚本"},{"key":"D","text":"管理数据库"}],"answer":"D","type":"single"},{"id":122,"question":"计算机从业人员在软件开发过程中，应(????????)对待版权和专利?","options":[{"key":"A","text":"随意使用"},{"key":"B","text":"尊重并遵守"},{"key":"C","text":"视情况而定"},{"key":"D","text":"无需关注"}],"answer":"B","type":"single"},{"id":123,"question":"当测试实施阶段发现测试用例与需求存在偏差时，应(????????)。","options":[{"key":"A","text":"停止测试"},{"key":"B","text":"修改测试用例以符合需求"},{"key":"C","text":"忽略该偏差"},{"key":"D","text":"报告给需求分析师"}],"answer":"D","type":"single"},{"id":124,"question":"某公司内部使用 wb.xyz.com.cn 作为访问某服务器的地址，其中 wb 是(????????)。","options":[{"key":"A","text":"主机名"},{"key":"B","text":"协议名"},{"key":"C","text":"目录名"},{"key":"D","text":"文件名"}],"answer":"A","type":"single"},{"id":125,"question":"微型计算机中普遍使用的字符编码是(????????)。","options":[{"key":"A","text":"BCD码"},{"key":"B","text":"ASCII码"},{"key":"C","text":"汉字编码"},{"key":"D","text":"补码"}],"answer":"B","type":"single"},{"id":126,"question":"在进行非功能性测试时，测试团队主要关注(????????)。","options":[{"key":"A","text":"功能的正确性"},{"key":"B","text":"系统的性能、安全性等"},{"key":"C","text":"界面的美观性"},{"key":"D","text":"代码的可读性"}],"answer":"B","type":"single"},{"id":127,"question":"在测试实施阶段，(????????)评估测试的有效性?","options":[{"key":"A","text":"仅看测试用例数量"},{"key":"B","text":"仅看发现的缺陷数量"},{"key":"C","text":"综合考虑测试覆盖率和缺陷情况"},{"key":"D","text":"评估测试人员的经验"}],"answer":"C","type":"single"},{"id":128,"question":"测试结果中的“通过”意味着(????????)。","options":[{"key":"A","text":"测试用例无需再执行"},{"key":"B","text":"功能完全符合预期"},{"key":"C","text":"代码中无缺陷"},{"key":"D","text":"测试环境完美"}],"answer":"B","type":"single"},{"id":129,"question":"在进行负载测试时，我们通常关注(????????)方面?","options":[{"key":"A","text":"系统在空闲状态下的资源使用情况"},{"key":"B","text":"系统在最大负载下的响应时间"},{"key":"C","text":"系统在不同负载下的稳定性"},{"key":"D","text":"系统处理单个事务的精确性"}],"answer":"C","type":"single"},{"id":130,"question":"下列关于电子邮件的说法中，错误的是(????????)。","options":[{"key":"A","text":"电子邮件可以发送文字信息"},{"key":"B","text":"电子邮件可以发送图片信息"},{"key":"C","text":"电子邮件可以发送视频信息"},{"key":"D","text":"电子邮件发送的信息必须立即到达"}],"answer":"D","type":"single"},{"id":131,"question":"在编写测试用例时，以下(????????)不是必要的步骤?","options":[{"key":"A","text":"确定测试目标"},{"key":"B","text":"设计测试步骤"},{"key":"C","text":"编写预期结果"},{"key":"D","text":"制定产品推广策略"}],"answer":"D","type":"single"},{"id":132,"question":"在准备测试数据时，以下(????????)不是需要考虑的因素?","options":[{"key":"A","text":"数据的真实性"},{"key":"B","text":"数据的完整性"},{"key":"C","text":"数据的存储位置"},{"key":"D","text":"数据的覆盖范围"}],"answer":"C","type":"single"},{"id":133,"question":"中断向量提供(????????)。","options":[{"key":"A","text":"外设的接口地址"},{"key":"B","text":"待传送数据的起始和终止地址"},{"key":"C","text":"主程序的断点地址"},{"key":"D","text":"中断服务程序入口地址"}],"answer":"D","type":"single"},{"id":134,"question":"以下不属于系统测试范畴的是(????????)。","options":[{"key":"A","text":"单元测试"},{"key":"B","text":"安全测试"},{"key":"C","text":"强度测试"},{"key":"D","text":"性能测试"}],"answer":"A","type":"single"},{"id":135,"question":"在进行自动化测试时，以下(????????)不是测试实施阶段需要考虑的?","options":[{"key":"A","text":"测试工具的选择"},{"key":"B","text":"测试脚本的编写"},{"key":"C","text":"测试环境的搭建"},{"key":"D","text":"用户培训材料的准备"}],"answer":"D","type":"single"},{"id":136,"question":"在进行冒烟测试时，主要关注的是(????????)。","options":[{"key":"A","text":"所有测试用例的执行情况"},{"key":"B","text":"主要功能是否可用"},{"key":"C","text":"代码的覆盖率"},{"key":"D","text":"性能的稳定性"}],"answer":"B","type":"single"},{"id":137,"question":"自动化测试的主要优势是(????????)。","options":[{"key":"A","text":"减少测试人员的工作量"},{"key":"B","text":"完全替代手动测试"},{"key":"C","text":"提高测试覆盖率"},{"key":"D","text":"保证测试结果的准确性"}],"answer":"A","type":"single"},{"id":138,"question":"测试结果中的(????????)数据可以用于评估测试的进度?","options":[{"key":"A","text":"已执行的测试用例数量"},{"key":"B","text":"剩余未执行的测试用例数量"},{"key":"C","text":"所有选项都是"},{"key":"D","text":"测试人员的出勤率"}],"answer":"C","type":"single"},{"id":139,"question":"兼容性测试不包括(????????)。","options":[{"key":"A","text":"软件兼容性测试"},{"key":"B","text":"硬件兼容性测试"},{"key":"C","text":"数据兼容性测试"},{"key":"D","text":"操作人员兼容性测试"}],"answer":"D","type":"single"},{"id":140,"question":"在进行集成测试时，主要测试的是(????????)。","options":[{"key":"A","text":"单个模块的功能"},{"key":"B","text":"模块之间的接口"},{"key":"C","text":"整个系统的性能"},{"key":"D","text":"用户界面的易用性"}],"answer":"B","type":"single"},{"id":141,"question":"在测试实施过程中，测试人员通常使用(????????)工具来管理测试用例和缺陷?","options":[{"key":"A","text":"版本控制系统"},{"key":"B","text":"项目管理工具"},{"key":"C","text":"测试管理工具"},{"key":"D","text":"代码编辑器"}],"answer":"C","type":"single"},{"id":142,"question":"在测试实施阶段，(????????)通常负责编写测试报告?","options":[{"key":"A","text":"测试经理"},{"key":"B","text":"开发人员"},{"key":"C","text":"测试人员"},{"key":"D","text":"项目经理"}],"answer":"C","type":"single"},{"id":143,"question":"根据输出对输入的依赖关系设计测试用例的黑盒测试方法是(????????)。","options":[{"key":"A","text":"等价类划分法"},{"key":"B","text":"因果图法"},{"key":"C","text":"边界值分析法"},{"key":"D","text":"场景法"}],"answer":"B","type":"single"},{"id":144,"question":"(????????)根据测试结果调整测试策略?","options":[{"key":"A","text":"增加更多的测试用例"},{"key":"B","text":"延长测试时间"},{"key":"C","text":"针对失败项加强测试"},{"key":"D","text":"忽略测试结果继续测试"}],"answer":"C","type":"single"},{"id":145,"question":"在测试报告中，(????????)处理未能执行的测试用例?","options":[{"key":"A","text":"忽略不记录"},{"key":"B","text":"标记为“未执行”并说明原因"},{"key":"C","text":"随意标记为“通过”或“失败”"},{"key":"D","text":"标记为“通过”以避免引起注意"}],"answer":"B","type":"single"},{"id":146,"question":"在进行性能测试时，(????????)要避免使用生产环境的数据?","options":[{"key":"A","text":"保护用户隐私"},{"key":"B","text":"提高测试速度"},{"key":"C","text":"降低测试成本"},{"key":"D","text":"确保测试结果的准确性"}],"answer":"A","type":"single"},{"id":147,"question":"验收测试通常由(????????)来进行?","options":[{"key":"A","text":"测试人员"},{"key":"B","text":"开发人员"},{"key":"C","text":"用户或客户"},{"key":"D","text":"项目经理"}],"answer":"C","type":"single"},{"id":148,"question":"测试执行过程的阶段不包括(????????)。","options":[{"key":"A","text":"初测期"},{"key":"B","text":"系统测试期"},{"key":"C","text":"细测期"},{"key":"D","text":"回归测试期"}],"answer":"B","type":"single"},{"id":149,"question":"在测试实施过程中，以下(????????)做法是不推荐的?","options":[{"key":"A","text":"严格按照测试计划执行测试"},{"key":"B","text":"在测试过程中记录详细的测试日志"},{"key":"C","text":"随意修改测试用例以适应实际测试结果"},{"key":"D","text":"定期与项目团队沟通测试进展和发现的问题"}],"answer":"C","type":"single"},{"id":150,"question":"在测试实施过程中，测试数据的选择应遵循(????????)原则?","options":[{"key":"A","text":"随意选择"},{"key":"B","text":"尽可能覆盖所有可能情况"},{"key":"C","text":"只选择正面数据"},{"key":"D","text":"只选择负面数据"}],"answer":"B","type":"single"},{"id":151,"question":"以下(????????)不是测试实施过程中的常见挑战?","options":[{"key":"A","text":"测试用例数量庞大"},{"key":"B","text":"测试环境不稳定"},{"key":"C","text":"测试时间不足"},{"key":"D","text":"开发人员拒绝修复缺陷"}],"answer":"D","type":"single"},{"id":152,"question":"在性能测试实施中，(????????)要模拟真实用户的行为?","options":[{"key":"A","text":"为了测试系统的功能"},{"key":"B","text":"为了找出代码中的错误"},{"key":"C","text":"为了更准确地评估系统的性能"},{"key":"D","text":"为了满足客户的需求"}],"answer":"C","type":"single"},{"id":153,"question":"在指令系统的各种寻址方式中,获取操作数最快的方式是(????????)。","options":[{"key":"A","text":"直接寻址"},{"key":"B","text":"间接寻址"},{"key":"C","text":"立即寻址"},{"key":"D","text":"寄存器寻址"}],"answer":"C","type":"single"},{"id":154,"question":"防火墙对数据包进行过滤时,不能过滤的是(????????)。","options":[{"key":"A","text":"源和目的 IP 地址"},{"key":"B","text":"存在安全威胁的 URL 地址"},{"key":"C","text":"IP 协议号"},{"key":"D","text":"源和目的端口"}],"answer":"B","type":"single"},{"id":155,"question":"在测试报告中，应(????????)描述测试结果?","options":[{"key":"A","text":"使用模糊的语言"},{"key":"B","text":"只列出失败的项"},{"key":"C","text":"客观、详细且准确地描述"},{"key":"D","text":"只列出通过的项"}],"answer":"C","type":"single"},{"id":156,"question":"在接口测试中，使用Mock服务的主要目的是(????????)。","options":[{"key":"A","text":"模拟外部依赖服务"},{"key":"B","text":"加速开发过程"},{"key":"C","text":"减少服务器负载"},{"key":"D","text":"提高测试覆盖率"}],"answer":"A","type":"single"},{"id":157,"question":"在进行容量测试时，为什么通常采用逐步递增的方式增加虚拟用户数?","options":[{"key":"A","text":"便于快速定位问题"},{"key":"B","text":"减少测试成本"},{"key":"C","text":"准确确定系统响应时间减慢的时机及用户数"},{"key":"D","text":"提高测试效率"}],"answer":"C","type":"single"},{"id":158,"question":"软件检测员应该具备的职业素质是(????????)。","options":[{"key":"A","text":"写作能力"},{"key":"B","text":"编码能力"},{"key":"C","text":"分析能力"},{"key":"D","text":"管理能力"},{"key":"E","text":"协调能力"}],"answer":"ABCDE","type":"multiple"},{"id":159,"question":"以下关于单元测试的叙述，正确的是(????????)。","options":[{"key":"A","text":"单元测试是指对软件中的最小可测试单元进行检查和验证"},{"key":"B","text":"单元测试是在软件开发过程中要进行的最低级别的测试活动"},{"key":"C","text":"结构化编程语言中的测试单元一般是函数或子过程"},{"key":"D","text":"单元测试不能由程序员自己完成"},{"key":"E","text":"单元测试不需要考虑全局数据结构的影响。"}],"answer":"ABC","type":"multiple"},{"id":160,"question":"在进行性能测试之前，需要准备(????????)工作?","options":[{"key":"A","text":"制定测试计划"},{"key":"B","text":"准备测试数据"},{"key":"C","text":"配置测试环境"},{"key":"D","text":"编写测试用例"},{"key":"E","text":"部署生产环境"}],"answer":"ABCD","type":"multiple"},{"id":161,"question":"设计系统测试计划需要参考的项目文挡有(????????)。","options":[{"key":"A","text":"软件测试计划"},{"key":"B","text":"可行性研究报告"},{"key":"C","text":"软件需求规范"},{"key":"D","text":"迭代计划"},{"key":"E","text":"项目成本预算"}],"answer":"ACD","type":"multiple"},{"id":162,"question":"在进行回归测试时，测试人员应关注(????????)内容?","options":[{"key":"A","text":"已修复缺陷的验证"},{"key":"B","text":"新增功能的测试"},{"key":"C","text":"所有功能的重新测试"},{"key":"D","text":"忽略之前未发现的缺陷"},{"key":"E","text":"项目的初步需求调研"}],"answer":"AB","type":"multiple"},{"id":163,"question":"以下关于回归测试的叙述中，正确的是(????????)。","options":[{"key":"A","text":"回归测试是为了确保改动不会带来不可预料的后果或错误"},{"key":"B","text":"回归测试需要针对修改过的软件成分进行测试"},{"key":"C","text":"回归测试需要能够测试软件的所有功能的代表性测试用例"},{"key":"D","text":"回归测试不容易实现自动化"},{"key":"E","text":"回归测试可以完全取代其他类型的测试。"}],"answer":"ABC","type":"multiple"},{"id":164,"question":"以下关于性能测试的叙述中，正确的是(????????)。","options":[{"key":"A","text":"性能测试的目的是为了验证软件系统是否能够达到用户提出的性能指标"},{"key":"B","text":"性能测试不用于发现软件系统中存在的性能瓶颈"},{"key":"C","text":"性能测试类型包括负载测试，强度测试，容量测试等"},{"key":"D","text":"性能测试常通过工具来模拟大量用户操作,增加系统负载"},{"key":"E","text":"性能测试不需要考虑系统的硬件和网络环境。"}],"answer":"ACD","type":"multiple"},{"id":165,"question":"在进行可用性测试时关注的问题应包括(????????)。","options":[{"key":"A","text":"安装过程是否困难"},{"key":"B","text":"错误提示是否明确"},{"key":"C","text":"GUI 接口是否标准"},{"key":"D","text":"登录是否方便"},{"key":"E","text":"帮助文本是否上下文敏感"}],"answer":"ABCDE","type":"multiple"},{"id":166,"question":"测试实施阶段，应(????????)确保缺陷的及时修复?","options":[{"key":"A","text":"立即停止测试等待修复"},{"key":"B","text":"及时与开发团队沟通缺陷情况"},{"key":"C","text":"忽略非关键缺陷的修复"},{"key":"D","text":"定期对缺陷进行跟踪和验证"},{"key":"E","text":"建立有效的缺陷管理流程"}],"answer":"BDE","type":"multiple"},{"id":167,"question":"搭建测试环境时，需要关注(????????)安全性问题?","options":[{"key":"A","text":"数据备份与恢复"},{"key":"B","text":"访问控制与权限管理"},{"key":"C","text":"防火墙与入侵检测系统"},{"key":"D","text":"软件漏洞与补丁管理"},{"key":"E","text":"物理安全与网络安全隔离"}],"answer":"ABCDE","type":"multiple"},{"id":168,"question":"计算机的基本工作原理是基于冯·诺依曼结构。\n答案： 正确","options":[],"answer":"","type":"single"},{"id":169,"question":"性能测试的结果只取决于测试工具的选择和使用。\n答案： 错误","options":[],"answer":"","type":"single"},{"id":170,"question":"测试用例应该覆盖所有的需求，以确保软件的全面测试。\n答案： 正确","options":[],"answer":"","type":"single"},{"id":171,"question":"自动化测试可以完全替代手动测试。\n答案： 错误","options":[],"answer":"","type":"single"},{"id":172,"question":"测试人员只需要执行测试用例，不需要参与需求分析。\n答案： 错误","options":[],"answer":"","type":"single"},{"id":173,"question":"压力测试是评估系统在高负载下的稳定性和容错能力的测试方法。\n答案： 正确","options":[],"answer":"","type":"single"},{"id":174,"question":"回归测试是在修复缺陷后重新执行测试用例的过程。\n答案： 正确","options":[],"answer":"","type":"single"},{"id":175,"question":"安全性测试只是测试软件是否容易受到攻击。\n答案： 错误","options":[],"answer":"","type":"single"},{"id":176,"question":"如果软件在测试环境中运行正常，那么在生产环境中也一定没有问题。\n答案： 错误","options":[],"answer":"","type":"single"},{"id":177,"question":"数据库管理系统（DBMS）是用来创建、管理和维护数据库的。\n答案： 正确","options":[],"answer":"","type":"single"},{"id":178,"question":"以下(????????)不是计算机软件测试员的职业道德要求?","options":[{"key":"A","text":"诚实守信"},{"key":"B","text":"泄露用户隐私"},{"key":"C","text":"尊重知识产权"},{"key":"D","text":"保护用户隐私"}],"answer":"B","type":"single"},{"id":179,"question":"计算机软件测试员在测试过程中应遵循的职业道德原则是(????????)。","options":[{"key":"A","text":"忽视软件中的小缺陷"},{"key":"B","text":"客观公正，保持诚实与透明"},{"key":"C","text":"追求个人利益最大化"},{"key":"D","text":"优先完成测试任务"}],"answer":"A","type":"single"},{"id":180,"question":"以下关于 Web 系统测试的测试策略的叙述中，不正确的是(????????)。","options":[{"key":"A","text":"按系统架构划分，包括客户端测试、服务端测试和网络测试"},{"key":"B","text":"按职能划分，包括应用功能的测试、 Web 应用服务的测试等"},{"key":"C","text":"按质量特性划分，包括功能测试、性能测试等"},{"key":"D","text":"按开发阶段划分，包括客户端开发的测试、服务端开发的测试等"}],"answer":"D","type":"single"},{"id":181,"question":"测试结果中的“失败”通常指(????????)。","options":[{"key":"A","text":"测试用例编写错误"},{"key":"B","text":"测试环境搭建不当"},{"key":"C","text":"功能表现与预期不符"},{"key":"D","text":"测试人员操作失误"}],"answer":"C","type":"single"},{"id":182,"question":"在进行黑盒测试时，测试人员主要关注(????????)。","options":[{"key":"A","text":"代码的结构和逻辑"},{"key":"B","text":"用户的需求和功能"},{"key":"C","text":"系统的内部状态"},{"key":"D","text":"程序的性能表现"}],"answer":"B","type":"single"},{"id":183,"question":"下列(????????)不是计算机病毒的特点?","options":[{"key":"A","text":"传染性"},{"key":"B","text":"破坏性"},{"key":"C","text":"免疫性"},{"key":"D","text":"潜伏性"}],"answer":"C","type":"single"},{"id":184,"question":"在准备自动化测试脚本时，以下(????????)不是必要的步骤?","options":[{"key":"A","text":"分析测试需求"},{"key":"B","text":"设计测试场景"},{"key":"C","text":"确定测试数据"},{"key":"D","text":"编写详细的设计文档"}],"answer":"D","type":"single"},{"id":185,"question":"对于回归测试，以下(????????)描述是准确的?","options":[{"key":"A","text":"只对新功能进行测试"},{"key":"B","text":"对已修复的缺陷进行测试"},{"key":"C","text":"对所有已完成的测试重新执行"},{"key":"D","text":"只在系统发布前进行测试"}],"answer":"B","type":"single"},{"id":186,"question":"在进行性能测试时，测试人员需要关注以下(????????)指标?","options":[{"key":"A","text":"代码的复杂度"},{"key":"B","text":"用户的年龄分布"},{"key":"C","text":"系统的响应时间"},{"key":"D","text":"界面的美观程度"}],"answer":"C","type":"single"},{"id":187,"question":"下列(????????)不是计算机网络的基本功能?","options":[{"key":"A","text":"数据通信"},{"key":"B","text":"资源共享"},{"key":"C","text":"分布式处理"},{"key":"D","text":"单机运算"}],"answer":"D","type":"single"},{"id":188,"question":"对于性能测试的准备，以下(????????)不是必需的?","options":[{"key":"A","text":"确定性能指标"},{"key":"B","text":"准备测试数据"},{"key":"C","text":"分析业务流程"},{"key":"D","text":"编写详细的界面设计文档"}],"answer":"D","type":"single"},{"id":189,"question":"以下不属于网络测试的测试对象的是(????????)。","options":[{"key":"A","text":"网络平台"},{"key":"B","text":"应用层"},{"key":"C","text":"软件子系统"},{"key":"D","text":"全局网络路径"}],"answer":"C","type":"single"},{"id":190,"question":"在测试实施过程中，测试人员应该(????????)。","options":[{"key":"A","text":"严格按照测试计划执行"},{"key":"B","text":"根据实际情况调整测试范围"},{"key":"C","text":"随意选择测试用例执行"},{"key":"D","text":"忽略测试中的异常情况"}],"answer":"A","type":"single"},{"id":191,"question":"下面的网络地址中，不能作为目标地址的是(????????)。","options":[{"key":"A","text":"0.0.0.0"},{"key":"B","text":"127.0.0.1"},{"key":"C","text":"10.255.255.255"},{"key":"D","text":"192.168.0.1"}],"answer":"A","type":"single"},{"id":192,"question":"在进行探索性测试时，测试人员应该(????????)。","options":[{"key":"A","text":"严格按照测试用例执行"},{"key":"B","text":"自由地探索系统的功能和边界"},{"key":"C","text":"只关注已知的缺陷"},{"key":"D","text":"忽视非功能性需求"}],"answer":"B","type":"single"},{"id":193,"question":"在 Windows 操作系统下，要获取某个网络开放端口所对应的应用程序信息，可以使用命令(????????)。","options":[{"key":"A","text":"ipconfig"},{"key":"B","text":"traceroute"},{"key":"C","text":"netstat"},{"key":"D","text":"nslookup"}],"answer":"C","type":"single"},{"id":194,"question":"当测试团队发现测试用例中存在遗漏或不足时，应该(????????)。","options":[{"key":"A","text":"忽略这些遗漏，继续进行测试"},{"key":"B","text":"立即停止测试，修复所有遗漏"},{"key":"C","text":"对测试用例进行补充和修订"},{"key":"D","text":"将问题转交给开发团队处理"}],"answer":"C","type":"single"},{"id":195,"question":"黑盒测试实施时，(????????)验证程序的健壮性?","options":[{"key":"A","text":"检查代码行数"},{"key":"B","text":"分析内存使用"},{"key":"C","text":"输入异常数据"},{"key":"D","text":"测试程序界面"}],"answer":"C","type":"single"},{"id":196,"question":"计算机系统中,CPU 对主存的访问方式属于(????????)。","options":[{"key":"A","text":"随机存取"},{"key":"B","text":"顺序存取"},{"key":"C","text":"索引存取"},{"key":"D","text":"哈希存取"}],"answer":"A","type":"single"},{"id":197,"question":"在软件测试准备阶段，编写测试计划的主要目的是(????????)。","options":[{"key":"A","text":"确定测试方法"},{"key":"B","text":"记录测试结果"},{"key":"C","text":"指导测试执行"},{"key":"D","text":"评估测试质量"}],"answer":"C","type":"single"},{"id":198,"question":"白盒测试实施中，测试覆盖率越高，通常说明(????????)。","options":[{"key":"A","text":"程序性能越好"},{"key":"B","text":"代码可读性越高"},{"key":"C","text":"测试越全面"},{"key":"D","text":"用户体验越好"}],"answer":"C","type":"single"},{"id":199,"question":"白盒测试实施时，测试覆盖率低可能意味着(????????)。","options":[{"key":"A","text":"程序性能差"},{"key":"B","text":"测试不充分"},{"key":"C","text":"用户体验不佳"},{"key":"D","text":"代码质量高"}],"answer":"B","type":"single"},{"id":200,"question":"操作系统的主要任务是(????????)。","options":[{"key":"A","text":"把源程序转换为目标代码"},{"key":"B","text":"负责文字格式编排和数据计算"},{"key":"C","text":"负责存取数据库中的各种数据,完成 SQL 查询"},{"key":"D","text":"管理计算机系统中的软、硬件资源"}],"answer":"D","type":"single"},{"id":201,"question":"负载压力测试的目的不包括(????????)。","options":[{"key":"A","text":"在模拟环境下评估系统服务等级满足情况"},{"key":"B","text":"预测系统负载压力承受力"},{"key":"C","text":"分析系统的瓶颈"},{"key":"D","text":"在应用实际部署前评估性能"}],"answer":"A","type":"single"},{"id":202,"question":"以下(????????)不是测试准备阶段的工作?","options":[{"key":"A","text":"制定测试计划"},{"key":"B","text":"编写测试脚本"},{"key":"C","text":"修复已知缺陷"},{"key":"D","text":"分配测试资源"}],"answer":"C","type":"single"},{"id":203,"question":"自动化测试实施中，(????????)持续提高测试效率?","options":[{"key":"A","text":"增加测试工具的数量"},{"key":"B","text":"简化测试流程"},{"key":"C","text":"减少测试用例的数量"},{"key":"D","text":"延长测试执行时间"}],"answer":"B","type":"single"},{"id":204,"question":"以下对软件测试对象的叙述中，不正确的是(????????)。","options":[{"key":"A","text":"软件测试不只是程序测试"},{"key":"B","text":"开发中产生的各种文档也是软件测试的对象"},{"key":"C","text":"使用的开发工具也是软件测试的对象"},{"key":"D","text":"软件的相关数据也是软件测试的对象"}],"answer":"C","type":"single"},{"id":205,"question":"自动化测试实施时，测试脚本与测试用例的关系应该是(????????)。","options":[{"key":"A","text":"一一对应"},{"key":"B","text":"多对一"},{"key":"C","text":"一对多"},{"key":"D","text":"无固定关系"}],"answer":"A","type":"single"},{"id":206,"question":"自动化测试实施中，(????????)确保测试脚本的可重用性?","options":[{"key":"A","text":"使用固定的测试数据"},{"key":"B","text":"设计通用的测试逻辑"},{"key":"C","text":"频繁重构测试环境"},{"key":"D","text":"保留冗余的测试代码"}],"answer":"B","type":"single"},{"id":207,"question":"在计算机中，(????????)存储器的存取速度最快?","options":[{"key":"A","text":"内存"},{"key":"B","text":"硬盘"},{"key":"C","text":"光盘"},{"key":"D","text":"缓存"}],"answer":"D","type":"single"},{"id":208,"question":"安全防护策略是对抗攻击的主要手段，以下不属于安全防护策略的是(????????)","options":[{"key":"A","text":"生产日志"},{"key":"B","text":"入侵检测"},{"key":"C","text":"隔离防护"},{"key":"D","text":"漏洞扫描"}],"answer":"A","type":"single"},{"id":209,"question":"对于一个新的测试项目，以下(????????)不是测试准备阶段的任务?","options":[{"key":"A","text":"分析测试需求"},{"key":"B","text":"评估测试可行性"},{"key":"C","text":"确定测试类型"},{"key":"D","text":"编写用户操作手册"}],"answer":"D","type":"single"},{"id":210,"question":"自动化测试工具与手动测试相比，主要优势在于(????????)。","options":[{"key":"A","text":"测试覆盖范围更广"},{"key":"B","text":"测试结果更准确"},{"key":"C","text":"测试执行效率更高"},{"key":"D","text":"测试成本更低"}],"answer":"C","type":"single"},{"id":211,"question":"在程序执行过程中，高速缓存(Cache)与主存间的地址映射由(????????)。","options":[{"key":"A","text":"操作系统进行管理"},{"key":"B","text":"存储管理软件进行管理"},{"key":"C","text":"程序员自行安排"},{"key":"D","text":"硬件自动完成"}],"answer":"D","type":"single"},{"id":212,"question":"以下关于可靠性测试的叙述中，不正确的是(????????)。","options":[{"key":"A","text":"由可靠性目标确定、测试用例设计、测试实施等活动组成"},{"key":"B","text":"可靠性测试时不需要考虑对软件开发进度和成本的影响"},{"key":"C","text":"可靠性测试最好是在受控自动测试环境下，由专业测试机构完成"},{"key":"D","text":"可靠性测试不能保证软件残存的缺陷数最少"}],"answer":"B","type":"single"},{"id":213,"question":"根据软件需求规格说明书，在开发环境下对已经集成的软件系统进行的测试是(????????)。","options":[{"key":"A","text":"系统测试"},{"key":"B","text":"集成测试"},{"key":"C","text":"单元测试"},{"key":"D","text":"验收测试"}],"answer":"A","type":"single"},{"id":214,"question":"测试结果中的(????????)数据可以用来评估测试的有效性?","options":[{"key":"A","text":"测试用例的复杂程度"},{"key":"B","text":"缺陷的修复速度和效率"},{"key":"C","text":"测试覆盖率"},{"key":"D","text":"测试人员的学历背景"}],"answer":"C","type":"single"},{"id":215,"question":"自动化测试实施中，(????????)处理测试脚本中的异常?","options":[{"key":"A","text":"忽略异常"},{"key":"B","text":"记录异常并继续执行"},{"key":"C","text":"终止测试执行"},{"key":"D","text":"抛出异常并处理"}],"answer":"D","type":"single"},{"id":216,"question":"软件设计一般包括概要设计和详细设计,其中概要设计不包括(????????)。","options":[{"key":"A","text":"体系结构设计"},{"key":"B","text":"模块划分"},{"key":"C","text":"数据结构设计"},{"key":"D","text":"模块之间的接口设计"}],"answer":"D","type":"single"},{"id":217,"question":"在测试准备阶段，(????????)工作有助于减少测试执行时的风险?","options":[{"key":"A","text":"编写详细的测试用例"},{"key":"B","text":"评估测试团队的能力"},{"key":"C","text":"忽略非功能性需求"},{"key":"D","text":"尽快开始测试执行"}],"answer":"A","type":"single"},{"id":218,"question":"自动化测试实施完成后，测试脚本应该如何管理(????????)?","options":[{"key":"A","text":"丢弃不再使用的脚本"},{"key":"B","text":"保留所有历史脚本"},{"key":"C","text":"定期更新和维护脚本"},{"key":"D","text":"不进行任何管理"}],"answer":"C","type":"single"},{"id":219,"question":"接口测试实施时，如何确保测试数据的安全性(????????)?","options":[{"key":"A","text":"使用任意数据进行测试"},{"key":"B","text":"对测试数据进行脱敏处理"},{"key":"C","text":"不考虑数据安全性"},{"key":"D","text":"只在测试环境中使用真实数据"}],"answer":"B","type":"single"},{"id":220,"question":"接口测试实施时，如何确保测试环境的稳定性(????????)?","options":[{"key":"A","text":"频繁更换测试环境"},{"key":"B","text":"使用与生产环境相似的测试环境"},{"key":"C","text":"不考虑环境差异"},{"key":"D","text":"在任意环境下进行测试"}],"answer":"B","type":"single"},{"id":221,"question":"自动化测试的优势不包括(????????)。","options":[{"key":"A","text":"提高测试效率"},{"key":"B","text":"提高测试覆盖率"},{"key":"C","text":"适用于所有类型的测试"},{"key":"D","text":"更好地利用资源"}],"answer":"C","type":"single"},{"id":222,"question":"接口测试实施中，如何处理接口返回的异常信息(????????)?","options":[{"key":"A","text":"忽略异常信息"},{"key":"B","text":"记录异常信息并继续测试"},{"key":"C","text":"终止测试并报告异常"},{"key":"D","text":"不处理异常信息"}],"answer":"B","type":"single"},{"id":223,"question":"以下关于文档测试的叙述中,不正确的是(????????)。","options":[{"key":"A","text":"文档要面向所有级别读者"},{"key":"B","text":"文档中用到的术语要符合行业规范"},{"key":"C","text":"需要检查所有信息是否真实正确"},{"key":"D","text":"需要检查软件返回结果跟文档描述是否一致"}],"answer":"A","type":"single"},{"id":224,"question":"接口测试实施中，如何评估测试覆盖率(????????)。","options":[{"key":"A","text":"计算测试接口数量"},{"key":"B","text":"统计测试用例数量"},{"key":"C","text":"使用测试工具自动分析"},{"key":"D","text":"不需要评估覆盖率"}],"answer":"C","type":"single"},{"id":225,"question":"以下不属于单元测试中局部数据结构测试内容的是(????????)。","options":[{"key":"A","text":"不一致的数据类型说明"},{"key":"B","text":"全局变量的定义在各模块是否一致"},{"key":"C","text":"使用尚未赋值的局部变量"},{"key":"D","text":"变量错误的缺省值"}],"answer":"B","type":"single"},{"id":226,"question":"接口测试实施中，如何处理接口依赖关系(????????)?","options":[{"key":"A","text":"忽略依赖关系"},{"key":"B","text":"逐个测试每个接口"},{"key":"C","text":"使用Mock技术模拟依赖接口"},{"key":"D","text":"不处理依赖关系"}],"answer":"C","type":"single"},{"id":227,"question":"以下测试项目不适合采用自动化测试的是(????????)。","options":[{"key":"A","text":"负载压力测试"},{"key":"B","text":"需要反复进行的测试"},{"key":"C","text":"易用性测试"},{"key":"D","text":"可以录制回放的测试"}],"answer":"C","type":"single"},{"id":228,"question":"测试结果中应包含(????????)关键信息?","options":[{"key":"A","text":"测试用例编号"},{"key":"B","text":"测试人员姓名"},{"key":"C","text":"测试结果(通过/失败)"},{"key":"D","text":"所有选项都是"}],"answer":"D","type":"single"},{"id":229,"question":"在接口测试实施中，如何模拟用户请求(????????)?","options":[{"key":"A","text":"手动输入数据"},{"key":"B","text":"使用测试工具发送请求"},{"key":"C","text":"编写代码模拟请求"},{"key":"D","text":"通过前端界面操作"}],"answer":"B","type":"single"},{"id":230,"question":"以下关于 web 测试的叙述中,不正确的是(????????)。","options":[{"key":"A","text":"与其它系统的测试内容不同"},{"key":"B","text":"与其它系统的测试手段基本相同"},{"key":"C","text":"与其它系统的测试重点不同"},{"key":"D","text":"与其它系统采用的测试工具部分不同"}],"answer":"A","type":"single"},{"id":231,"question":"以下关于标准符合性测试的叙述中，不正确的是(????????)。","options":[{"key":"A","text":"测试依据主要是行业标准"},{"key":"B","text":"包括数据内容标准、通信协议标准、幵发接口标准和信息编码标准"},{"key":"C","text":"数据内容标准描述用于数据交换与互操作的数据格式或内容规范"},{"key":"D","text":"通信协议标准描述用于数据通信与传输接口的数据格式"}],"answer":"A","type":"single"},{"id":232,"question":"性能测试实施时，如何确定测试周期(????????)?","options":[{"key":"A","text":"越长越好"},{"key":"B","text":"根据项目需求"},{"key":"C","text":"越短越好"},{"key":"D","text":"随意设定"}],"answer":"B","type":"single"},{"id":233,"question":"性能测试时，测试人员如何确定测试指标(????????)?","options":[{"key":"A","text":"随意选择"},{"key":"B","text":"根据项目需求"},{"key":"C","text":"咨询开发人员"},{"key":"D","text":"使用默认指标"}],"answer":"B","type":"single"},{"id":234,"question":"以下中不属于网络测试对象的为(????????)。","options":[{"key":"A","text":"服务器"},{"key":"B","text":"路由器"},{"key":"C","text":"网段"},{"key":"D","text":"CPU"}],"answer":"D","type":"single"},{"id":235,"question":"测试结果中的(????????)信息有助于重现缺陷?","options":[{"key":"A","text":"测试人员的姓名"},{"key":"B","text":"测试环境的配置"},{"key":"C","text":"缺陷出现的步骤和条件"},{"key":"D","text":"测试用例的编写时间"}],"answer":"C","type":"single"},{"id":236,"question":"在进行负载测试时，以下(????????)不是重要的测试指标?","options":[{"key":"A","text":"响应时间"},{"key":"B","text":"吞吐量"},{"key":"C","text":"用户满意度调查"},{"key":"D","text":"资源利用率"}],"answer":"C","type":"single"},{"id":237,"question":"在进行性能测试时，对测试数据进行预处理主要为(????????)?","options":[{"key":"A","text":"提高测试数据的真实性"},{"key":"B","text":"降低测试复杂度"},{"key":"C","text":"确保测试数据的一致性"},{"key":"D","text":"增加测试数据量"}],"answer":"C","type":"single"},{"id":238,"question":"信息系统进入使用阶段后，主要任务是(????????)。","options":[{"key":"A","text":"进行信息系统开发与测试"},{"key":"B","text":"进行信息系统需求分析"},{"key":"C","text":"对信息系统进行管理和维护"},{"key":"D","text":"对信息系统数据库进行设计"}],"answer":"C","type":"single"},{"id":239,"question":"下列软件属性中，软件产品首要满足的应该是(????????)。","options":[{"key":"A","text":"容错、纠错能力"},{"key":"B","text":"性能需求"},{"key":"C","text":"可扩展性和灵活性"},{"key":"D","text":"功能需求"}],"answer":"D","type":"single"},{"id":240,"question":"测试报告的主要作用是(????????)。","options":[{"key":"A","text":"记录测试过程"},{"key":"B","text":"展示测试结果"},{"key":"C","text":"指导测试执行"},{"key":"D","text":"评估测试人员能力"}],"answer":"B","type":"single"},{"id":241,"question":"性能测试中，为(????????)要模拟用户行为?","options":[{"key":"A","text":"为了测试系统的功能"},{"key":"B","text":"为了评估系统的性能"},{"key":"C","text":"为了找出代码中的错误"},{"key":"D","text":"为了优化用户体验"}],"answer":"B","type":"single"},{"id":242,"question":"在准备兼容性测试时，以下(????????)不是需要考虑的?","options":[{"key":"A","text":"不同操作系统的版本"},{"key":"B","text":"浏览器的类型"},{"key":"C","text":"网络连接的速度"},{"key":"D","text":"用户的个人喜好"}],"answer":"D","type":"single"},{"id":243,"question":"以下关于软件测试目的的叙述中,不正确的是(????????)。","options":[{"key":"A","text":"测试是程序的执行过程,目的在于发现错误"},{"key":"B","text":"一个好的测试用例在于能发现至今未发现的错误"},{"key":"C","text":"分析错误产生原因不便于软件过程改进"},{"key":"D","text":"通过对测试结果分析整理,可以修正软件开发规则"}],"answer":"C","type":"single"},{"id":244,"question":"性能测试中，并发用户数增加可能会导致(????????)结果?","options":[{"key":"A","text":"响应时间减少"},{"key":"B","text":"吞吐量增加"},{"key":"C","text":"资源利用率下降"},{"key":"D","text":"系统稳定性下降"}],"answer":"D","type":"single"},{"id":245,"question":"不属于网络测试的测试类型为(????????)。","options":[{"key":"A","text":"可靠性测试"},{"key":"B","text":"可接受性测试"},{"key":"C","text":"存储容量测试"},{"key":"D","text":"吞吐量测试"}],"answer":"C","type":"single"},{"id":246,"question":"在进行性能测试时，以下(????????)指标可以反映系统的可扩展性?","options":[{"key":"A","text":"响应时间"},{"key":"B","text":"吞吐量"},{"key":"C","text":"并发用户数"},{"key":"D","text":"资源利用率"}],"answer":"B","type":"single"},{"id":247,"question":"在性能测试中，(????????)指标通常用于表示单位时间内系统成功处理的请求数?","options":[{"key":"A","text":"响应时间"},{"key":"B","text":"吞吐量"},{"key":"C","text":"并发用户数"},{"key":"D","text":"错误率"}],"answer":"B","type":"single"},{"id":248,"question":"在团队合作中，软件测试员应如何体现职业道德(????????)?","options":[{"key":"A","text":"尊重并信任团队成员"},{"key":"B","text":"随意指责和批评同事的工作"},{"key":"C","text":"积极分享测试经验和技巧"},{"key":"D","text":"遵守团队的工作流程和规范"},{"key":"E","text":"保护项目信息和用户数据的安全与隐私"}],"answer":"ACDE","type":"multiple"},{"id":249,"question":"在测试实施阶段，以下(????????)做法是不正确的?","options":[{"key":"A","text":"测试人员随意更改测试用例"},{"key":"B","text":"测试人员忽略已知缺陷"},{"key":"C","text":"测试团队与开发团队紧密协作"},{"key":"D","text":"测试人员不记录测试结果"},{"key":"E","text":"测试人员不按照测试计划执行测试"}],"answer":"ABDE","type":"multiple"},{"id":250,"question":"在制定测试计划时，以下(????????)做法是正确的?","options":[{"key":"A","text":"明确测试目标"},{"key":"B","text":"忽略测试风险"},{"key":"C","text":"合理安排测试资源"},{"key":"D","text":"制定详细的测试进度表"},{"key":"E","text":"充分考虑测试范围与测试策略"}],"answer":"ACDE","type":"multiple"},{"id":251,"question":"用户口令测试应考虑的测试点包括(????????)。","options":[{"key":"A","text":"口令时效"},{"key":"B","text":"口令长度"},{"key":"C","text":"口令复杂度"},{"key":"D","text":"口令锁定"},{"key":"E","text":"口令传输与存储安全"}],"answer":"ABCDE","type":"multiple"},{"id":252,"question":"测试报告中可能包含(????????)图表来辅助分析?","options":[{"key":"A","text":"缺陷分布图"},{"key":"B","text":"测试用例执行状态图"},{"key":"C","text":"性能指标对比图"},{"key":"D","text":"用户反馈统计图"},{"key":"E","text":"模块测试覆盖率图"}],"answer":"ABCDE","type":"multiple"},{"id":253,"question":"以下关于因果图法测试的叙述中,正确的是(????????)。","options":[{"key":"A","text":"因果图法是从自然语言书写的程序规格说明中找出因和果"},{"key":"B","text":"因果图法不一定需要把因果图转成判定表"},{"key":"C","text":"为了去掉不可能出现的因果组合,需要标明约束条件"},{"key":"D","text":"如果设计阶段就采用了判定表,则不必再画因果图"},{"key":"E","text":"因果图法仅适用于具有简单因果关系的系统"}],"answer":"ACD","type":"multiple"},{"id":254,"question":"以下关于数据流图的叙述中,正确的是(????????)。","options":[{"key":"A","text":"分层数据流图可以清晰地对稍微复杂一些的实际问题建模"},{"key":"B","text":"用来描述数据流从输 入到输出的变换流程"},{"key":"C","text":"能清晰地表达加工的处理过程"},{"key":"D","text":"不能表示实体之间的关系"},{"key":"E","text":"每条数据流的起点和终点必须是加工"}],"answer":"ABD","type":"multiple"},{"id":255,"question":"测试实施阶段，如何评估测试进度(????????)?","options":[{"key":"A","text":"仅看测试用例执行情况"},{"key":"B","text":"综合考虑测试用例执行和缺陷情况"},{"key":"C","text":"只关注缺陷发现数量"},{"key":"D","text":"评估测试覆盖率"},{"key":"E","text":"只考虑测试资源的利用情况"}],"answer":"BD","type":"multiple"},{"id":256,"question":"软件测试的结果可以用来做(????????)?","options":[{"key":"A","text":"评估软件质量"},{"key":"B","text":"指导软件开发"},{"key":"C","text":"制定测试计划"},{"key":"D","text":"确定发布日期"},{"key":"E","text":"为项目决策提供数据支持"}],"answer":"ABE","type":"multiple"},{"id":257,"question":"测试实施阶段，测试人员可能会执行(????????)类型的测试?","options":[{"key":"A","text":"功能测试"},{"key":"B","text":"性能测试"},{"key":"C","text":"安全测试"},{"key":"D","text":"兼容性测试"},{"key":"E","text":"负载测试"}],"answer":"ABCDE","type":"multiple"},{"id":258,"question":"软件测试员在与客户沟通时，应尽可能隐瞒软件中的潜在问题，以维持良好的客户关系。(????????)\n答案： 错误","options":[],"answer":"","type":"single"},{"id":259,"question":"计算机网络中的路由器是用来连接不同网络的设备。(????????)\n答案： 正确","options":[],"answer":"","type":"single"},{"id":260,"question":"验收测试通常由客户或最终用户执行。(????????)\n答案： 正确","options":[],"answer":"","type":"single"},{"id":261,"question":"二进制数1101转换为十进制数是13。(????????)\n答案： 正确","options":[],"answer":"","type":"single"},{"id":262,"question":"探索性测试是一种没有计划、随意进行的测试方法。(????????)\n答案： 错误","options":[],"answer":"","type":"single"},{"id":263,"question":"测试人员在准备测试用例时应该考虑使用等价类划分方法。(????????)\n答案： 正确","options":[],"answer":"","type":"single"},{"id":264,"question":"性能测试只能在特定的时间段内进行，不能在系统上线后进行。(????????)\n答案： 错误","options":[],"answer":"","type":"single"},{"id":265,"question":"SQL语言只能用于数据库查询，不能用于更新或删除数据。(????????)\n答案： 错误","options":[],"answer":"","type":"single"},{"id":266,"question":"接口测试可以完全替代单元测试和集成测试。(????????)\n答案： 错误","options":[],"answer":"","type":"single"},{"id":267,"question":"性能测试的结果应该定期监控和分析，以便及时发现和解决性能问题。(????????)\n答案： 正确","options":[],"answer":"","type":"single"},{"id":268,"question":"在进行软件测试时，发现一个严重的安全漏洞，正确的做法是(????????)。","options":[{"key":"A","text":"立即报告给上级和相关部门"},{"key":"B","text":"私下告知开发人员并等待其修复"},{"key":"C","text":"忽略该漏洞，认为与自己无关"},{"key":"D","text":"利用该漏洞进行个人测试"}],"answer":"A","type":"single"},{"id":269,"question":"当软件测试员发现测试数据涉及用户隐私时，正确处理方式是(????????)","options":[{"key":"A","text":"随意查看并分享给他人"},{"key":"B","text":"严格遵守隐私保护政策，确保数据安全"},{"key":"C","text":"仅在自己需要时查看隐私数据"},{"key":"D","text":"将隐私数据用于个人研究"}],"answer":"B","type":"single"},{"id":270,"question":"一个软件系统的生存周期包含可行性分析和项目开发计划、需求分析、设计(概要设计和详细设计)、编码、测试和维护等活动，其中(????????)是软件工程的技术核心,其任务是确定如何实现软件系统。","options":[{"key":"A","text":"可行性分析和项目开发计划"},{"key":"B","text":"需求分析"},{"key":"C","text":"设计"},{"key":"D","text":"编码"}],"answer":"C","type":"single"},{"id":271,"question":"程序中常采用变量表示数据，变量具有名、地址、值、作用域、生存期等属性。关于变量的叙述，(????????)是错误的。","options":[{"key":"A","text":"根据作用域规则，在函数中定义的变量只能在函数中引用"},{"key":"B","text":"在函数中定义的变量，其生存期为整个程序执行期间"},{"key":"C","text":"在函数中定义的变量不能与其所在函数的形参同名"},{"key":"D","text":"在函数中定义的变量，其存储单元在内存的栈区"}],"answer":"B","type":"single"},{"id":272,"question":"下列叙述中，正确的是(????????)。","options":[{"key":"A","text":"CPU能直接读取硬盘上的数据"},{"key":"B","text":"CPU能直接存取内存储器"},{"key":"C","text":"CPU由存储器、运算器和控制器组成"},{"key":"D","text":"CPU主要用来存储程序和数据"}],"answer":"B","type":"single"},{"id":273,"question":"一台微机性能的好坏，主要取决于(????????)。","options":[{"key":"A","text":"内存储器的容量大小"},{"key":"B","text":"CPU的性能"},{"key":"C","text":"显示器的分辨率高低"},{"key":"D","text":"硬盘的容量"}],"answer":"B","type":"single"},{"id":274,"question":"组成计算机指令的两部分是(????????)。","options":[{"key":"A","text":"数据和字符"},{"key":"B","text":"操作码和地址码"},{"key":"C","text":"运算符和运算数"},{"key":"D","text":"运算符和运算结果"}],"answer":"B","type":"single"},{"id":275,"question":"对“功能测试的回归测试经常要多次重复”的正确理解是(????????)。","options":[{"key":"A","text":"回归测试应该执行初测时所用的全部测试用例"},{"key":"B","text":"回归测试只要执行发现缺陷的那些测试用例即可"},{"key":"C","text":"通过多次的回归测试可以发现所有缺陷"},{"key":"D","text":"回归测试就是验收测试"}],"answer":"A","type":"single"},{"id":276,"question":"计算机感染特洛伊木马后的典型现象是(????????)。","options":[{"key":"A","text":"程序异常退出"},{"key":"B","text":"有未知程序试图建立网络连接"},{"key":"C","text":"邮箱被垃圾邮件填满"},{"key":"D","text":"Windows 系统黑屏"}],"answer":"B","type":"single"},{"id":277,"question":"以下关于测试计划的叙述中，不正确的是(????????)。","options":[{"key":"A","text":"测试计划能使测试工作顺利进行"},{"key":"B","text":"测试计划能使项目参与人员沟通顺畅"},{"key":"C","text":"测试计划无益于提高软件质量"},{"key":"D","text":"测试计划是软件过程规范化的要求"}],"answer":"C","type":"single"},{"id":278,"question":"软件测试的对象包括(????????)。\n①需求规格说明\n②概要设计文档\n③软件测试报告\n④软件代码\n⑤用户手册\n⑥软件开发人员","options":[{"key":"A","text":"①②③④⑤⑥"},{"key":"B","text":"①②③④⑤"},{"key":"C","text":"①②④"},{"key":"D","text":"①②③④"}],"answer":"B","type":"single"},{"id":279,"question":"软件可移植性应从如下(????????)方面进行测试。","options":[{"key":"A","text":"适应性、易安装性、共存性、易替换性"},{"key":"B","text":"适应性、易安装性、可伸缩性、易替换性"},{"key":"C","text":"适应性、易安装性、兼容性、易替换性"},{"key":"D","text":"适应性、成熟性、兼容性、易替换性"}],"answer":"A","type":"single"},{"id":280,"question":"在计算机中，每个存储单元都有一个连续的编号，此编号称为(????????)。","options":[{"key":"A","text":"地址"},{"key":"B","text":"位置号"},{"key":"C","text":"门牌号"},{"key":"D","text":"房号"}],"answer":"A","type":"single"},{"id":281,"question":"用来存储当前正在运行的应用程序的存储器是(????????)。","options":[{"key":"A","text":"内存"},{"key":"B","text":"硬盘"},{"key":"C","text":"软盘"},{"key":"D","text":"CD-ROM"}],"answer":"A","type":"single"},{"id":282,"question":"以下关于软件测试原则叙述中，不正确是的(????????)。","options":[{"key":"A","text":"测试阶段在实现阶段之后，因此实现完成后再开始进行测试"},{"key":"B","text":"测试用例需要完善和修订"},{"key":"C","text":"发现错误越多的地方应该进行更多的测试"},{"key":"D","text":"测试用例本身也需要测试"}],"answer":"A","type":"single"},{"id":283,"question":"下列度量单位中，用来度量计算机内存空间大小的是(????????)。","options":[{"key":"A","text":"MB/s"},{"key":"B","text":"MIPS"},{"key":"C","text":"GHz"},{"key":"D","text":"MB"}],"answer":"D","type":"single"},{"id":284,"question":"下列叙述中，错误的是(????????)。","options":[{"key":"A","text":"硬盘在主机箱内，它是主机的组成部分"},{"key":"B","text":"硬盘是外部存储器之一"},{"key":"C","text":"硬盘的技术指标之一是每分钟的转速rpm"},{"key":"D","text":"硬盘与CPU之间不能直接交换数据"}],"answer":"A","type":"single"},{"id":285,"question":"下列关于磁道的说法中，正确的是(????????)。","options":[{"key":"A","text":"盘面上的磁道是一组同心圆"},{"key":"B","text":"由于每一磁道的周长不同，所以每一磁道的存储容量也不同"},{"key":"C","text":"盘面上的磁道是一条阿基米德螺线"},{"key":"D","text":"磁道的编号是最内圈为0，并次序由内向外逐渐增大，最外圈的编号最大"}],"answer":"A","type":"single"},{"id":286,"question":"(????????)不属于测试人员编写的文档。","options":[{"key":"A","text":"缺陷报告"},{"key":"B","text":"测试环境配置文档"},{"key":"C","text":"缺陷修复报告"},{"key":"D","text":"测试用例说明文档"}],"answer":"C","type":"single"},{"id":287,"question":"验证某音乐会订票系统是否能够承受大量用户同时访问，测试工程师一般采用(????????)测试工具。","options":[{"key":"A","text":"故障诊断"},{"key":"B","text":"代码"},{"key":"C","text":"负载压力"},{"key":"D","text":"网络仿真"}],"answer":"C","type":"single"},{"id":288,"question":"如果在程序中的多个地方需要使用同一个常数，那么最好将其定义为一个符号常量，这样(????????)。","options":[{"key":"A","text":"可以缩短程序代码的长度"},{"key":"B","text":"便于进行编译过程的优化"},{"key":"C","text":"可以加快程序的运行速度"},{"key":"D","text":"便于修改此常数并提高可读性"}],"answer":"D","type":"single"},{"id":289,"question":"检测系统在长时间运行下是否存在性能瓶颈，应进行(????????)。","options":[{"key":"A","text":"负载测试"},{"key":"B","text":"压力测试"},{"key":"C","text":"疲劳强度测试"},{"key":"D","text":"大数据量测试"}],"answer":"C","type":"single"},{"id":290,"question":"若程序在运行时陷入死循环，则该情况属于(????????)。","options":[{"key":"A","text":"语法错误"},{"key":"B","text":"运行时异常"},{"key":"C","text":"动态的语义错误"},{"key":"D","text":"静态的语义错误"}],"answer":"C","type":"single"},{"id":291,"question":"测试过程中，正确的测试顺序应该是(????????)。\n①单元测试 ②集成测试 ③系统测试","options":[{"key":"A","text":"①②③"},{"key":"B","text":"③①②"},{"key":"C","text":"②③①"},{"key":"D","text":"③②①"}],"answer":"A","type":"single"},{"id":292,"question":"Java 虚拟机采用(????????)软件体系结构。","options":[{"key":"A","text":"管道一过滤器"},{"key":"B","text":"分层"},{"key":"C","text":"黑板"},{"key":"D","text":"解释器"}],"answer":"D","type":"single"},{"id":293,"question":"现要开发一个通过卫星通信连接计算机的新软件产品，假设之前没有开发卫星通信软件的经验，则最不适合采用(????????)模型。","options":[{"key":"A","text":"瀑布"},{"key":"B","text":"原型"},{"key":"C","text":"增量"},{"key":"D","text":"螺旋"}],"answer":"A","type":"single"},{"id":294,"question":"某软件系统的原始需求包括，“当某个査询请求是不适当或非法的，应提示用户”，该需求属于(????????)。","options":[{"key":"A","text":"功能需求"},{"key":"B","text":"质量需求"},{"key":"C","text":"设计约束"},{"key":"D","text":"过程约束"}],"answer":"C","type":"single"},{"id":295,"question":"给系统增加特征越容易，说明软件的(????????)越好。","options":[{"key":"A","text":"功能性"},{"key":"B","text":"可靠性"},{"key":"C","text":"可维护性"},{"key":"D","text":"易使用性"}],"answer":"C","type":"single"},{"id":296,"question":"软件工程每一个阶段结束前，应该着重对可维护性进行复审。在系统设计阶段的复审期间，应该从(????????)出发，评价软件的结构和过程。","options":[{"key":"A","text":"指出可移植性问题以及可能影响软件维护的系统界面"},{"key":"B","text":"容易修改、模块化和功能独立的目的"},{"key":"C","text":"强调编码风格和内部说明文档"},{"key":"D","text":"可测试性"}],"answer":"B","type":"single"},{"id":297,"question":"(????????)不属于使用软件测试工具的目的。","options":[{"key":"A","text":"帮助测试寻找问题"},{"key":"B","text":"协助问题的诊断"},{"key":"C","text":"节省测试时间"},{"key":"D","text":"替代手工测试"}],"answer":"D","type":"single"},{"id":298,"question":"下列几种存储器，存取周期最短的是(????????)。","options":[{"key":"A","text":"内存储器"},{"key":"B","text":"光盘存储器"},{"key":"C","text":"硬盘存储器"},{"key":"D","text":"软盘存储器"}],"answer":"A","type":"single"},{"id":299,"question":"在外部设备中，扫描仪属于(????????)。","options":[{"key":"A","text":"输出设备"},{"key":"B","text":"存储设备"},{"key":"C","text":"输入设备"},{"key":"D","text":"特殊设备"}],"answer":"C","type":"single"},{"id":300,"question":"软件测试的对象包括(????????)。\n①软件代码\n②文档\n③数据","options":[{"key":"A","text":"①②"},{"key":"B","text":"①③"},{"key":"C","text":"②③"},{"key":"D","text":"①②③"}],"answer":"D","type":"single"},{"id":301,"question":"软件测试的目的是(????????)。","options":[{"key":"A","text":"避免软件开发中出现的错误"},{"key":"B","text":"发现软件中出现的错误"},{"key":"C","text":"容忍软件中出现的错误"},{"key":"D","text":"修改软件中出现的错误"}],"answer":"B","type":"single"},{"id":302,"question":"当前流行的移动硬盘或U盘进行读/写利用的计算机接口是(????????)。","options":[{"key":"A","text":"串行接口"},{"key":"B","text":"平行接口"},{"key":"C","text":"USB"},{"key":"D","text":"UBS"}],"answer":"C","type":"single"},{"id":303,"question":"测试系统在何种服务级别下会崩溃，应进行(????????)。","options":[{"key":"A","text":"负载测试"},{"key":"B","text":"压力测试"},{"key":"C","text":"大数据量测试"},{"key":"D","text":"疲劳测试"}],"answer":"B","type":"single"},{"id":304,"question":"对于防病毒系统的测试是系统安全测试的重要内容，下列不属于防病毒系统安全测试基本测试点的是(????????)。","options":[{"key":"A","text":"能否提供对病毒特征与检测引擎的定期在线更新服务"},{"key":"B","text":"能否在不更新特征库的前提下对新的未知病毒进行有效查杀"},{"key":"C","text":"能否支持多种平台的病毒防范"},{"key":"D","text":"能否支持对电子邮件附件的病毒防治"}],"answer":"B","type":"single"},{"id":305,"question":"系统功能测试过程中，验证需求可以正确实现的测试用例称为(????????)。","options":[{"key":"A","text":"业务流程测试用例"},{"key":"B","text":"功能点测试用例"},{"key":"C","text":"通过测试用例"},{"key":"D","text":"失败测试用例"}],"answer":"C","type":"single"},{"id":306,"question":"在软件测试结果分析中，如果发现某个模块的错误率较高，正确的做法是(????????)。","options":[{"key":"A","text":"忽略该错误"},{"key":"B","text":"立即修复所有错误"},{"key":"C","text":"对该模块进行详细的代码审查"},{"key":"D","text":"停止测试工作"}],"answer":"C","type":"single"},{"id":307,"question":"以下关于软件缺陷的叙述中，不正确的是(????????)。","options":[{"key":"A","text":"需要对软件缺陷划分严重性，但不需要划分处理优先级"},{"key":"B","text":"需要进行软件错误跟踪管理"},{"key":"C","text":"每次对软件错误的处理都要保留处理信息"},{"key":"D","text":"错误修复后必须经过验证"}],"answer":"A","type":"single"},{"id":308,"question":"针对电子政务类应用系统的功能测试，为设计有效的测试用例，应(????????)。","options":[{"key":"A","text":"使业务需求的覆盖率达到 100%"},{"key":"B","text":"利用等价类法模拟核心业务流程的正确执行"},{"key":"C","text":"对一个业务流程的测试用例设计一条验证数据"},{"key":"D","text":"经常使用边界值法验证界面输入值"}],"answer":"D","type":"single"},{"id":309,"question":"测试结果分析中，(????????)方法有助于确定软件的可靠性和稳定性?","options":[{"key":"A","text":"只查看新发现的缺陷"},{"key":"B","text":"分析缺陷的分布和趋势"},{"key":"C","text":"只关注严重缺陷"},{"key":"D","text":"忽略已修复的缺陷"}],"answer":"B","type":"single"},{"id":310,"question":"使用自动化测试工具中，(????????)是最难自动化的。","options":[{"key":"A","text":"测试执行"},{"key":"B","text":"实际输出与预期输出的比较"},{"key":"C","text":"测试用例生成"},{"key":"D","text":"测试录制与回放"}],"answer":"C","type":"single"},{"id":311,"question":"软件测试的对象不包括(????????)。","options":[{"key":"A","text":"程序"},{"key":"B","text":"需求规格说明书"},{"key":"C","text":"数据库中的数据"},{"key":"D","text":"质量改进措施"}],"answer":"D","type":"single"},{"id":312,"question":"在软件测试中，测试环境应该由(????????)来准备?","options":[{"key":"A","text":"开发人员"},{"key":"B","text":"测试人员"},{"key":"C","text":"项目经理"},{"key":"D","text":"客户代表"}],"answer":"B","type":"single"},{"id":313,"question":"回归测试通常在(????????)情况下进行?","options":[{"key":"A","text":"新功能开发完成后"},{"key":"B","text":"缺陷修复后"},{"key":"C","text":"系统升级后"},{"key":"D","text":"项目结束前"}],"answer":"B","type":"single"},{"id":314,"question":"在对测试结果进行分析时，以下(????????)不是重要的考虑因素?","options":[{"key":"A","text":"缺陷的数量"},{"key":"B","text":"缺陷的严重程度"},{"key":"C","text":"测试的覆盖范围"},{"key":"D","text":"开发人员的个人喜好"}],"answer":"D","type":"single"},{"id":315,"question":"以下(????????)不是测试执行阶段的主要任务?","options":[{"key":"A","text":"运行测试用例"},{"key":"B","text":"记录测试结果"},{"key":"C","text":"编写测试报告"},{"key":"D","text":"编写测试用例"}],"answer":"D","type":"single"},{"id":316,"question":"如果测试结果显示某个功能的响应时间超出了预期，最可能的原因是(????????)。","options":[{"key":"A","text":"测试环境配置错误"},{"key":"B","text":"用户操作不当"},{"key":"C","text":"代码优化不足"},{"key":"D","text":"需求变更"}],"answer":"C","type":"single"},{"id":317,"question":"在测试过程中，缺陷的跟踪和管理通常由(????????)工具来支持。","options":[{"key":"A","text":"版本控制系统"},{"key":"B","text":"缺陷管理系统"},{"key":"C","text":"测试管理工具"},{"key":"D","text":"项目管理工具"}],"answer":"B","type":"single"},{"id":318,"question":"在测试执行过程中，发现缺陷后正确的做法是(????????)","options":[{"key":"A","text":"自行修复缺陷"},{"key":"B","text":"报告给开发人员"},{"key":"C","text":"忽略该缺陷"},{"key":"D","text":"等待项目结束后再处理"}],"answer":"B","type":"single"},{"id":319,"question":"测试数据的准备应遵循(????????)原则。","options":[{"key":"A","text":"真实性"},{"key":"B","text":"随意性"},{"key":"C","text":"冗余性"},{"key":"D","text":"复杂性"}],"answer":"A","type":"single"},{"id":320,"question":"在HTTP接口测试中，(????????)状态码表示请求成功。","options":[{"key":"A","text":"200"},{"key":"B","text":"400"},{"key":"C","text":"404"},{"key":"D","text":"500"}],"answer":"A","type":"single"},{"id":321,"question":"以下(????????)状态码表示客户端请求有语法错误或无法完成请求。","options":[{"key":"A","text":"200"},{"key":"B","text":"400"},{"key":"C","text":"404"},{"key":"D","text":"500"}],"answer":"B","type":"single"},{"id":322,"question":"在测试执行阶段，测试人员应用以下(????????)方式记录测试结果。","options":[{"key":"A","text":"口头汇报"},{"key":"B","text":"记录在便签纸上"},{"key":"C","text":"使用测试管理工具"},{"key":"D","text":"发送给项目经理"}],"answer":"C","type":"single"},{"id":323,"question":"在测试实施过程中，(????????)阶段通常不涉及测试脚本的编写。","options":[{"key":"A","text":"测试计划"},{"key":"B","text":"测试设计"},{"key":"C","text":"测试准备"},{"key":"D","text":"测试执行"}],"answer":"A","type":"single"},{"id":324,"question":"在测试执行阶段，测试人员应(????????)处理无法重现的缺陷。","options":[{"key":"A","text":"忽略该缺陷"},{"key":"B","text":"立即修复该缺陷"},{"key":"C","text":"深入调查并尝试重现"},{"key":"D","text":"报告给项目经理"}],"answer":"D","type":"single"},{"id":325,"question":"在测试执行阶段，以下(????????)做法是不推荐的。","options":[{"key":"A","text":"严格按照测试用例执行测试"},{"key":"B","text":"随意跳过一些看似不重要的测试用例"},{"key":"C","text":"详细记录测试结果和发现的问题"},{"key":"D","text":"对发现的问题进行复现和确认"}],"answer":"B","type":"single"},{"id":326,"question":"在软件测试实施中，测试团队与开发团队之间的沟通通常通过(????????)方式进行。","options":[{"key":"A","text":"电子邮件"},{"key":"B","text":"电话"},{"key":"C","text":"会议"},{"key":"D","text":"以上都是"}],"answer":"D","type":"single"},{"id":327,"question":"在测试实施过程中，以下(????????)环节与测试质量直接相关。","options":[{"key":"A","text":"测试计划的制定"},{"key":"B","text":"测试用例的设计"},{"key":"C","text":"测试环境的搭建"},{"key":"D","text":"所有上述环节"}],"answer":"D","type":"single"},{"id":328,"question":"在分析测试结果时，发现某个功能的失败率持续较高，以下(????????)措施最为有效。","options":[{"key":"A","text":"增加对该功能的测试次数"},{"key":"B","text":"忽略该功能的测试结果"},{"key":"C","text":"对该功能进行重构或优化"},{"key":"D","text":"减少对该功能的测试范围"}],"answer":"C","type":"single"},{"id":329,"question":"在测试执行阶段，测试人员确保测试准确性的做法是(????????)","options":[{"key":"A","text":"只执行简单的测试用例"},{"key":"B","text":"依赖开发人员的意见"},{"key":"C","text":"严格按照测试计划和测试用例执行"},{"key":"D","text":"随意修改测试用例以适应实际情况"}],"answer":"C","type":"single"},{"id":330,"question":"以下不属于文档测试测试范围的是(????????)。","options":[{"key":"A","text":"软件开发计划"},{"key":"B","text":"数据库脚本"},{"key":"C","text":"测试分析报告"},{"key":"D","text":"用户手册"}],"answer":"B","type":"single"},{"id":331,"question":"在测试执行阶段，以下(????????)做法有助于提高测试的准确性。","options":[{"key":"A","text":"只执行部分关键的测试用例"},{"key":"B","text":"随意调整测试用例的顺序"},{"key":"C","text":"严格按照测试用例和计划执行"},{"key":"D","text":"跳过看似复杂的测试用例"}],"answer":"C","type":"single"},{"id":332,"question":"在测试实施过程中，测试人员与开发人员之间的协作对于(????????)至关重要。","options":[{"key":"A","text":"测试进度"},{"key":"B","text":"缺陷修复"},{"key":"C","text":"测试质量"},{"key":"D","text":"所有上述内容"}],"answer":"D","type":"single"},{"id":333,"question":"软件风险一般包含(????????)两个特性。","options":[{"key":"A","text":"救火和危机管理"},{"key":"B","text":"已知风险和未知风险"},{"key":"C","text":"不确定性和损失"},{"key":"D","text":"员工和预算"}],"answer":"C","type":"single"},{"id":334,"question":"软件测试员在职业道德方面平衡个人利益和公司利益的方式是(????????)","options":[{"key":"A","text":"以个人利益为重，忽略公司利益"},{"key":"B","text":"以公司利益为重，遵守公司规定"},{"key":"C","text":"灵活处理个人利益和公司利益的关系"},{"key":"D","text":"完全听从上级指示，不考虑个人利益"},{"key":"E","text":"个人利益和公司利益冲冲突时，优先个人利益"}],"answer":"BC","type":"multiple"},{"id":335,"question":"兼容性测试的测试范围包括(????????)。","options":[{"key":"A","text":"硬件兼容性测试"},{"key":"B","text":"软件兼容性测试"},{"key":"C","text":"数据兼容性测试"},{"key":"D","text":"平台兼容性测试"},{"key":"E","text":"操作人员兼容性测试"}],"answer":"ABCD","type":"multiple"},{"id":336,"question":"在设计测试用例时，测试人员需要关注的要点是(????????)。","options":[{"key":"A","text":"输入数据的有效性"},{"key":"B","text":"预期的输出结果"},{"key":"C","text":"测试的执行步骤"},{"key":"D","text":"软件的界面设计"},{"key":"E","text":"测试人员的分工"}],"answer":"ABC","type":"multiple"},{"id":337,"question":"在软件测试实施过程中，测试团队可能使用测试技术是(????????)。","options":[{"key":"A","text":"单元测试"},{"key":"B","text":"集成测试"},{"key":"C","text":"功能测试"},{"key":"D","text":"代码审查"},{"key":"E","text":"性能测试"}],"answer":"ABCDE","type":"multiple"},{"id":338,"question":"测试人员在记录测试结果时，需要包括的信息是(????????)。","options":[{"key":"A","text":"测试用例的编号"},{"key":"B","text":"测试执行的时间"},{"key":"C","text":"测试结果的状态"},{"key":"D","text":"缺陷的详细描述"},{"key":"E","text":"缺陷的修复状态"}],"answer":"ABCD","type":"multiple"},{"id":339,"question":"在分析测试结果时，测试人员通常需要关注的缺陷类型是(????????)。","options":[{"key":"A","text":"功能缺陷"},{"key":"B","text":"性能缺陷"},{"key":"C","text":"安全的缺陷"},{"key":"D","text":"界面缺陷"},{"key":"E","text":"兼容性缺陷"}],"answer":"ABCDE","type":"multiple"},{"id":340,"question":"软件测试结果分析对于后续的开发和测试工作的指导意义是(????????)。","options":[{"key":"A","text":"确定测试的重点区域"},{"key":"B","text":"调整测试策略"},{"key":"C","text":"预测未来可能出现的问题"},{"key":"D","text":"评估项目的整体进度"},{"key":"E","text":"确定软件发布日期，保证按时交付"}],"answer":"ABC","type":"multiple"},{"id":341,"question":"测试结果分析中的趋势分析可能涉及的方面是(????????)。","options":[{"key":"A","text":"缺陷数量的变化趋势"},{"key":"B","text":"测试覆盖率的提升情况"},{"key":"C","text":"测试用例的执行效率"},{"key":"D","text":"软件性能的提升"},{"key":"E","text":"用户界面设计的审美评估"}],"answer":"ABCD","type":"multiple"},{"id":342,"question":"在进行软件测试结果分析时，以下(????????)方法可以帮助识别测试中的不足。","options":[{"key":"A","text":"对比不同版本的测试结果"},{"key":"B","text":"分析测试用例的覆盖情况"},{"key":"C","text":"听取开发人员的意见"},{"key":"D","text":"评估测试环境的稳定性"},{"key":"E","text":"用户满意度调查"}],"answer":"ABD","type":"multiple"},{"id":343,"question":"准备测试环境时，测试人员需要考虑的因素是(????????)。","options":[{"key":"A","text":"硬件配置"},{"key":"B","text":"操作系统版本"},{"key":"C","text":"网络条件"},{"key":"D","text":"开发人员的工作习惯"},{"key":"E","text":"测试人员的个人喜好"}],"answer":"ABC","type":"multiple"},{"id":344,"question":"软件测试员在测试过程中发现软件存在性能问题，但认为该问题不会影响用户使用，因此选择不报告。(????????)\n答案： 错误","options":[],"answer":"","type":"single"},{"id":345,"question":"根据输入输出等价类边界上的取值来设计用例的黑盒测试方法是边界值分析法。(????????)\n答案： 正确","options":[],"answer":"","type":"single"},{"id":346,"question":"查询结果正确性不属于负载压力测试的测试指标。(????????)\n答案： 正确","options":[],"answer":"","type":"single"},{"id":347,"question":"确认测试一般由开发方进行。(????????)\n答案： 错误","options":[],"answer":"","type":"single"},{"id":348,"question":"黑盒测试也叫做结构测试，针对代码本身进行测试。(????????)\n答案： 错误","options":[],"answer":"","type":"single"},{"id":349,"question":"数据库是按照一定的数据模型组织、存储和应用的数据的集合。(????????)\n答案： 正确","options":[],"answer":"","type":"single"},{"id":350,"question":"由干操作系统升级而对软件进行修改的行为属于适应性维护。(????????)\n答案： 正确","options":[],"answer":"","type":"single"},{"id":351,"question":"软件测试员可以随意使用未经授权的测试数据和软件，以完成测试任务。(????????)\n答案： 错误","options":[],"answer":"","type":"single"},{"id":352,"question":"性能测试主要关注输出结果是否正确。(????????)\n答案： 错误","options":[],"answer":"","type":"single"},{"id":353,"question":"确认测试需要验证软件的功能和性能是否与用户要求一致。(????????)\n答案： 正确","options":[],"answer":"","type":"single"},{"id":354,"question":"42.系统功能测试过程中，验证需求可以正确实现的测试用例称为(? )。","options":[{"key":"A","text":"业务流程测试用例"},{"key":"B","text":"功能点测试用例"},{"key":"C","text":"通过测试用例"},{"key":"D","text":"失败测试用例"}],"answer":"C","type":"single"},{"id":355,"question":"在测试过程中，软件测试员发现同事违反了测试规范，正确的做法是(????????)","options":[{"key":"A","text":"直接告诉同事并帮助其改正"},{"key":"B","text":"忽视该问题，认为与自己无关"},{"key":"C","text":"向上级报告并等待上级处理"},{"key":"D","text":"私下与同事讨论，不公开提及"}],"answer":"A","type":"single"},{"id":356,"question":"当软件测试员面临时间和质量的冲突时，正确的做法是(????????)。","options":[{"key":"A","text":"优先考虑时间，牺牲测试质量"},{"key":"B","text":"坚守测试标准，确保质量不受损"},{"key":"C","text":"随意调整测试范围以满足时间要求"},{"key":"D","text":"放弃测试，直接交付产品"}],"answer":"B","type":"single"},{"id":357,"question":"下列叙述中，正确的是(????????)。","options":[{"key":"A","text":"内存中存放的是当前正在执行的程序和所需的数据"},{"key":"B","text":"内存中存放的是当前暂时不用的程序和数据"},{"key":"C","text":"外存中存放的是当前正在执行的程序和所需的数据"},{"key":"D","text":"内存中只能存放指令"}],"answer":"A","type":"single"},{"id":358,"question":"能直接与CPU交换信息的存储器是(????????)。","options":[{"key":"A","text":"硬盘存储器"},{"key":"B","text":"CD-ROM"},{"key":"C","text":"内存储器"},{"key":"D","text":"软盘存储器"}],"answer":"C","type":"single"},{"id":359,"question":"下列叙述中，正确的是(????????)。","options":[{"key":"A","text":"字长为16位表示这台计算机最大能计算一个l6位的十进制数"},{"key":"B","text":"字长为16位表示这台计算机的CPU一次能处理l6位二进制数"},{"key":"C","text":"运算器只能进行算术运算"},{"key":"D","text":"SRAM的集成度高于DRAM"}],"answer":"B","type":"single"},{"id":360,"question":"下列叙述中，错误的是(????????)。","options":[{"key":"A","text":"内存储器一般由ROM和RAM组成"},{"key":"B","text":"RAM中存储的数据一旦断电就全部丢失"},{"key":"C","text":"CPU可以直接存取硬盘中的数据"},{"key":"D","text":"存储在ROM中的数据断电后也不会丢失"}],"answer":"C","type":"single"},{"id":361,"question":"把存储在硬盘上的程序传送到指定的内存区域中，这种操作称为(????????)。","options":[{"key":"A","text":"输出"},{"key":"B","text":"写盘"},{"key":"C","text":"输入"},{"key":"D","text":"读盘"}],"answer":"D","type":"single"},{"id":362,"question":"在接口测试中，(????????)状态码表示服务器内部错误，无法完成请求。","options":[{"key":"A","text":"200"},{"key":"B","text":"400"},{"key":"C","text":"404"},{"key":"D","text":"500"}],"answer":"D","type":"single"},{"id":363,"question":"软件需求规格说明书的内容不包括(????????)。","options":[{"key":"A","text":"软件功能需求"},{"key":"B","text":"软件非功能需求"},{"key":"C","text":"设计约束"},{"key":"D","text":"接口设计"}],"answer":"D","type":"single"},{"id":364,"question":"以下不属于在需求分析阶段编写的文档是(????????)。","options":[{"key":"A","text":"软件需求规格说明书"},{"key":"B","text":"概要设计文档"},{"key":"C","text":"测试计划"},{"key":"D","text":"用户手册"}],"answer":"B","type":"single"},{"id":365,"question":"在软件测试实施过程中，以下(????????)活动通常在测试计划阶段进行。","options":[{"key":"A","text":"编写测试用例"},{"key":"B","text":"执行测试用例"},{"key":"C","text":"编写测试总结报告"},{"key":"D","text":"确定测试范围和目标"}],"answer":"D","type":"single"},{"id":366,"question":"以下属于安全测试方法的是(????????)。\n①安全功能验证②安全漏洞扫描\n③模拟攻击实验④数据侦听","options":[{"key":"A","text":"①③"},{"key":"B","text":"①②③"},{"key":"C","text":"①②④"},{"key":"D","text":"①②③④"}],"answer":"D","type":"single"},{"id":367,"question":"硬盘属于(????????)。","options":[{"key":"A","text":"内部存储器"},{"key":"B","text":"外部存储器"},{"key":"C","text":"只读存储器"},{"key":"D","text":"输出设备"}],"answer":"B","type":"single"},{"id":368,"question":"软件工程的基本目标是(????????)。","options":[{"key":"A","text":"消除软件固有的复杂性"},{"key":"B","text":"开发高质量的软件"},{"key":"C","text":"努力发挥开发人员的创造性潜能"},{"key":"D","text":"推动软件理论和技术的发展"}],"answer":"B","type":"single"},{"id":369,"question":"编写测试计划的目的是(????????)。\n①测试工作顺利进行\n②使项目参与人员沟通更舒畅\n③使测试工作更加系统化\n④软件过程规范化的要求\n⑤控制软件质量","options":[{"key":"A","text":"②③⑤"},{"key":"B","text":"①②③"},{"key":"C","text":"①②④"},{"key":"D","text":"①②⑤"}],"answer":"B","type":"single"},{"id":370,"question":"确定采用哪种软件体系结构是在(????????)阶段进行的。","options":[{"key":"A","text":"需求分析"},{"key":"B","text":"概要设计"},{"key":"C","text":"详细设计"},{"key":"D","text":"软件实现"}],"answer":"B","type":"single"},{"id":371,"question":"以下关于模块化的叙述中，正确的是(????????)。","options":[{"key":"A","text":"每个模块的规模越小越好，这样开发每个模块的成本就可以降低了"},{"key":"B","text":"每个模块的规模越大越好，这样模块之间的通信开销就会降低了"},{"key":"C","text":"应具有高内聚和低耦合的性质"},{"key":"D","text":"仅适用于结构化开发方法"}],"answer":"C","type":"single"},{"id":372,"question":"以下关于建立良好的程序设计风格的叙述中，正确的是(????????)。","options":[{"key":"A","text":"程序应简单、清晰、可读性好"},{"key":"B","text":"变量的命名要符合语法"},{"key":"C","text":"充分考虑程序的执行效率"},{"key":"D","text":"程序的注释可有可无"}],"answer":"A","type":"single"},{"id":373,"question":"计算机的内存储器与外存储器相比较(????????)。","options":[{"key":"A","text":"内存储器比外存储器容量小，但存取速度快，价格便宜"},{"key":"B","text":"内存储器比外存储器容量大，但存取速度慢，价格昂贵"},{"key":"C","text":"内存储器比外存储器容量小，价格昂贵，但存取速度快"},{"key":"D","text":"内存储器存取速度慢，价格昂贵，而且没有外存储器的容量大"}],"answer":"C","type":"single"},{"id":374,"question":"在进行压力测试时，通常使用(????????)工具来模拟大量用户并发请求。","options":[{"key":"A","text":"性能测试工具"},{"key":"B","text":"安全扫描工具"},{"key":"C","text":"代码审查工具"},{"key":"D","text":"缺陷管理工具"}],"answer":"A","type":"single"},{"id":375,"question":"当接口请求的资源被永久移动到新URI时，应返回(????????)状态码。","options":[{"key":"A","text":"301"},{"key":"B","text":"302"},{"key":"C","text":"304"},{"key":"D","text":"401"}],"answer":"A","type":"single"},{"id":376,"question":"下列各存储器中，存取速度最快的一种是(????????)。","options":[{"key":"A","text":"Cache"},{"key":"B","text":"动态RAM(DRAM)"},{"key":"C","text":"CD-ROM"},{"key":"D","text":"硬盘"}],"answer":"A","type":"single"},{"id":377,"question":"在进行性能测试时，通常需要考虑(????????)因素。","options":[{"key":"A","text":"用户并发数"},{"key":"B","text":"数据量大小"},{"key":"C","text":"网络带宽"},{"key":"D","text":"所有上述因素"}],"answer":"D","type":"single"},{"id":378,"question":"以下关于测试时机的叙述中，不正确的是(????????)。","options":[{"key":"A","text":"应该尽可能早地进行测试"},{"key":"B","text":"软件中的错误暴露得越迟，则修复和改正错误所花费的代价就越高"},{"key":"C","text":"应该在代码编写完成后开始测试"},{"key":"D","text":"项目需求分析和设计阶段需要测试人员参与"}],"answer":"C","type":"single"},{"id":379,"question":"软件的易用性包括(????????)。\n①易理解性②易学习性③易操作性④吸引性⑤依从性","options":[{"key":"A","text":"①②"},{"key":"B","text":"①②③"},{"key":"C","text":"①②③④"},{"key":"D","text":"①②③④⑤"}],"answer":"D","type":"single"},{"id":380,"question":"计算机软件系统包括(????????)。","options":[{"key":"A","text":"程序、数据和相应的文档"},{"key":"B","text":"系统软件和应用软件"},{"key":"C","text":"数据库管理系统和数据库"},{"key":"D","text":"编译系统和办公软件"}],"answer":"B","type":"single"},{"id":381,"question":"以下关于边界值测试法的叙述中，不正确的是(????????)。","options":[{"key":"A","text":"边界值分析法不仅重视输入域边界，而且也必须考虑输出域边界"},{"key":"B","text":"边界值分析法是对等价类划分方法的补充"},{"key":"C","text":"发生在输入输出边界上的错误比发生在输入输出范围的内部的错误要少"},{"key":"D","text":"测试数据应尽可能选取边界上的值"}],"answer":"C","type":"single"},{"id":382,"question":"构成CPU的主要部件是(????????)。","options":[{"key":"A","text":"内存和控制器"},{"key":"B","text":"内存、控制器和运算器"},{"key":"C","text":"高速缓存和运算器"},{"key":"D","text":"控制器和运算器"}],"answer":"D","type":"single"},{"id":383,"question":"白盒测试不能发现(????????)。","options":[{"key":"A","text":"代码路径中的错误"},{"key":"B","text":"死循环"},{"key":"C","text":"逻辑错误"},{"key":"D","text":"功能错误"}],"answer":"D","type":"single"},{"id":384,"question":"在软件测试中，(????????)阶段涉及测试数据的准备。","options":[{"key":"A","text":"测试计划"},{"key":"B","text":"测试设计"},{"key":"C","text":"测试执行"},{"key":"D","text":"测试总结"}],"answer":"B","type":"single"},{"id":385,"question":"以下关于负载压力测试的叙述中，不正确的是(????????)。","options":[{"key":"A","text":"负载压力测试用于确认系统是否支持性能需求"},{"key":"B","text":"负载压力测试能得到系统可承受的业务量增长"},{"key":"C","text":"负载压力测试是在一定约束条件下测试系统所能承受的最大负载压力"},{"key":"D","text":"负载压力测试不用于发现不同负载场景下的速度变慢、内存泄露等问题"}],"answer":"D","type":"single"},{"id":386,"question":"以下属于静态测试方法的是(????????)。","options":[{"key":"A","text":"分支覆盖率分析"},{"key":"B","text":"复杂度分析"},{"key":"C","text":"系统压力测试"},{"key":"D","text":"路径覆盖分析"}],"answer":"B","type":"single"},{"id":387,"question":"软件系统的安全性是信息安全的一个重要组成部分，针对程序和数据的安全性测试与评估是软件安全性测试的重要内容，(????????)不属于安全件测试与评估的基本内容。","options":[{"key":"A","text":"用户认证机制"},{"key":"B","text":"加密机制"},{"key":"C","text":"系统能承受的并发用户量"},{"key":"D","text":"数据备份与恢复手段"}],"answer":"C","type":"single"},{"id":388,"question":"CPU 响应 DMA 请求是在(????????)结束时。","options":[{"key":"A","text":"一条指令执行"},{"key":"B","text":"一段程序"},{"key":"C","text":"一个时钟周期"},{"key":"D","text":"一个总线周期"}],"answer":"D","type":"single"},{"id":389,"question":"在压力测试过程中，如果系统崩溃或出现严重性能下降，通常说明(????????)。","options":[{"key":"A","text":"系统功能存在缺陷"},{"key":"B","text":"系统架构不够健壮"},{"key":"C","text":"测试环境配置错误"},{"key":"D","text":"测试数据不准"}],"answer":"B","type":"single"},{"id":390,"question":"性能测试中，吞吐量通常指的是(????????)。","options":[{"key":"A","text":"系统处理请求的速度"},{"key":"B","text":"单位时间内系统处理的请求数量"},{"key":"C","text":"系统存储数据的能力"},{"key":"D","text":"系统运行的时间长短"}],"answer":"B","type":"single"},{"id":391,"question":"软件测试结果分析中，(????????)指标通常用于评估测试的充分性。","options":[{"key":"A","text":"缺陷修复率"},{"key":"B","text":"代码覆盖率"},{"key":"C","text":"用户满意度"},{"key":"D","text":"系统响应时间"}],"answer":"B","type":"single"},{"id":392,"question":"在进行测试结果分析时，发现大部分缺陷集中在某个特定的测试阶段，这表明(????????)。","options":[{"key":"A","text":"该测试阶段不重要"},{"key":"B","text":"该测试阶段需要更多的关注和改进"},{"key":"C","text":"测试执行人员能力不足"},{"key":"D","text":"软件质量整体较低"}],"answer":"B","type":"single"},{"id":393,"question":"性能测试中，如果响应时间超过预期，可能的原因是(????????)。","options":[{"key":"A","text":"测试数据不准确"},{"key":"B","text":"系统资源不足"},{"key":"C","text":"网络延迟"},{"key":"D","text":"所有上述原因都可能"}],"answer":"D","type":"single"},{"id":394,"question":"(????????)能确定性能测试的负载级别。","options":[{"key":"A","text":"根据经验随意设定"},{"key":"B","text":"根据实际业务场景模拟"},{"key":"C","text":"参考其他类似系统的负载"},{"key":"D","text":"由测试人员个人决定"}],"answer":"B","type":"single"},{"id":395,"question":"(????????)是黑盒测试中的一种测试方法，它通过测试每个独立的功能模块来确保整体功能正确性。","options":[{"key":"A","text":"等价类划分"},{"key":"B","text":"边界值分析"},{"key":"C","text":"功能分解测试"},{"key":"D","text":"因果图法"}],"answer":"C","type":"single"},{"id":396,"question":"在黑盒测试中，测试人员主要关注(????????)类型的错误。","options":[{"key":"A","text":"语法错误"},{"key":"B","text":"逻辑错误"},{"key":"C","text":"功能错误"},{"key":"D","text":"性能错误"}],"answer":"C","type":"single"},{"id":397,"question":"测试结果显示，某个模块的缺陷数量在测试周期内持续减少，这通常说明(????????)。","options":[{"key":"A","text":"该模块已经完美无缺"},{"key":"B","text":"测试工作已经足够充分"},{"key":"C","text":"模块质量正在逐步提高"},{"key":"D","text":"测试团队效率较低"}],"answer":"C","type":"single"},{"id":398,"question":"在白盒测试中，路径覆盖是指(????????)。","options":[{"key":"A","text":"每个语句至少执行一次"},{"key":"B","text":"每个分支至少执行一次"},{"key":"C","text":"程序中的每一条可能路径都至少执行一次"},{"key":"D","text":"每个条件至少为真和假各一次"}],"answer":"C","type":"single"},{"id":399,"question":"(????????)阶段主要关注测试环境的搭建和配置。","options":[{"key":"A","text":"测试计划"},{"key":"B","text":"测试设计"},{"key":"C","text":"测试准备"},{"key":"D","text":"测试执行"}],"answer":"C","type":"single"},{"id":400,"question":"接口测试中，通常使用(????????)工具来模拟客户端请求。","options":[{"key":"A","text":"Postman"},{"key":"B","text":"JMeter"},{"key":"C","text":"Selenium"},{"key":"D","text":"Wireshark"}],"answer":"A","type":"single"},{"id":401,"question":"在接口测试中，我们通常需要关注(????????)方面的测试。","options":[{"key":"A","text":"功能测试"},{"key":"B","text":"性能测试"},{"key":"C","text":"兼容性测试"},{"key":"D","text":"所有上述方面"}],"answer":"D","type":"single"},{"id":402,"question":"如果在软件测试结果分析中发现资源消耗异常，最应该检查(????????)方面。","options":[{"key":"A","text":"用户界面设计"},{"key":"B","text":"系统配置"},{"key":"C","text":"代码逻辑"},{"key":"D","text":"测试环境"}],"answer":"D","type":"single"},{"id":403,"question":"如果一个接口返回了404状态码，通常表示(????????)。","options":[{"key":"A","text":"请求成功"},{"key":"B","text":"请求的资源未找到"},{"key":"C","text":"请求错误"},{"key":"D","text":"服务器内部错误"}],"answer":"B","type":"single"},{"id":404,"question":"接口测试中，模拟用户的大量并发请求的方法是(????????)","options":[{"key":"A","text":"使用多个测试人员同时请求"},{"key":"B","text":"使用性能测试工具"},{"key":"C","text":"增加服务器的硬件配置"},{"key":"D","text":"无需模拟，直接测试"}],"answer":"B","type":"single"},{"id":405,"question":"在进行接口测试时，需要对接口参数进行边界值测试的原因是(????????)。","options":[{"key":"A","text":"确保接口能够处理异常情况"},{"key":"B","text":"检查接口是否支持多种数据类型"},{"key":"C","text":"测试接口的最大处理能力"},{"key":"D","text":"验证接口返回值的格式"}],"answer":"A","type":"single"},{"id":406,"question":"在进行压力测试前，通常需要准备(????????)内容","options":[{"key":"A","text":"详细的测试计划"},{"key":"B","text":"足够多的测试人员"},{"key":"C","text":"高性能的测试环境"},{"key":"D","text":"所有上述内容"}],"answer":"D","type":"single"},{"id":407,"question":"压力测试中，(????????)能确定系统的最大负载能力。","options":[{"key":"A","text":"根据经验估计"},{"key":"B","text":"通过逐步增加负载并观察系统表现来确定"},{"key":"C","text":"查阅系统文档"},{"key":"D","text":"询问系统开发人员"}],"answer":"B","type":"single"},{"id":408,"question":"在压力测试过程中，如果发现系统响应时间逐渐增长，可能的原因是(????????)。","options":[{"key":"A","text":"测试数据不准确"},{"key":"B","text":"系统资源不足"},{"key":"C","text":"网络带宽受限"},{"key":"D","text":"所有上述原因都可能"}],"answer":"D","type":"single"},{"id":409,"question":"(????????)状态码表示客户端未通过服务器的身份验证。","options":[{"key":"A","text":"301"},{"key":"B","text":"302"},{"key":"C","text":"401"},{"key":"D","text":"403"}],"answer":"C","type":"single"},{"id":410,"question":"接口测试中的安全性测试主要关注(????????)。","options":[{"key":"A","text":"接口的响应时间"},{"key":"B","text":"接口的输入验证"},{"key":"C","text":"接口的加密方式"},{"key":"D","text":"接口的返回值"}],"answer":"B","type":"single"},{"id":411,"question":"接口测试中，通常使用(????????)方法来检查接口返回的数据。","options":[{"key":"A","text":"断言"},{"key":"B","text":"日志分析"},{"key":"C","text":"性能测试"},{"key":"D","text":"代码审查"}],"answer":"A","type":"single"},{"id":412,"question":"接口测试中的压力测试主要用于测试(????????)。","options":[{"key":"A","text":"接口的响应时间"},{"key":"B","text":"接口的稳定性"},{"key":"C","text":"接口的并发处理能力"},{"key":"D","text":"接口的数据准确性"}],"answer":"C","type":"single"},{"id":413,"question":"接口文档在接口测试中起到的作用是(????????)。","options":[{"key":"A","text":"指导测试人员编写测试用例"},{"key":"B","text":"替代测试人员进行测试"},{"key":"C","text":"提供接口的实现细节"},{"key":"D","text":"确定接口的开发进度"}],"answer":"A","type":"single"},{"id":414,"question":"在进行软件测试时，测试人员的主要任务是(????????)。","options":[{"key":"A","text":"编写代码"},{"key":"B","text":"修复缺陷"},{"key":"C","text":"执行测试用例"},{"key":"D","text":"设计软件架构"}],"answer":"C","type":"single"},{"id":415,"question":"在进行黑盒测试时，测试人员主要关注(????????)。","options":[{"key":"A","text":"代码内部结构"},{"key":"B","text":"程序的外部特性"},{"key":"C","text":"测试覆盖率"},{"key":"D","text":"代码性能"}],"answer":"B","type":"single"},{"id":416,"question":"在进行集成测试时，测试人员主要检查(????????)。","options":[{"key":"A","text":"模块内部的逻辑"},{"key":"B","text":"模块之间的接口"},{"key":"C","text":"用户界面的可用性"},{"key":"D","text":"系统的整体性能"}],"answer":"B","type":"single"},{"id":417,"question":"在分析软件测试结果时，发现某个新版本的性能相比之前版本有所下降，以下(????????)措施可能是最有效的。","options":[{"key":"A","text":"增加测试人员数量"},{"key":"B","text":"重新设计用户界面"},{"key":"C","text":"对性能瓶颈进行调优"},{"key":"D","text":"减少功能需求"}],"answer":"C","type":"single"},{"id":418,"question":"在进行软件测试时，回归测试主要用于(????????)。","options":[{"key":"A","text":"测试新添加的功能"},{"key":"B","text":"重新测试已修复的缺陷"},{"key":"C","text":"评估测试进度"},{"key":"D","text":"确定测试范围"}],"answer":"B","type":"single"},{"id":419,"question":"在软件测试实施中，(????????)阶段涉及测试资源的分配。","options":[{"key":"A","text":"测试计划"},{"key":"B","text":"测试设计"},{"key":"C","text":"测试执行"},{"key":"D","text":"测试总结"}],"answer":"A","type":"single"},{"id":420,"question":"冒烟测试使用的目的是(????????)。","options":[{"key":"A","text":"检查软件的主要功能是否工作"},{"key":"B","text":"评估软件的性能"},{"key":"C","text":"检查软件的安全性"},{"key":"D","text":"确定软件的缺陷密度"}],"answer":"A","type":"single"},{"id":421,"question":"在进行性能测试时，测试人员主要关注(????????)。","options":[{"key":"A","text":"代码质量"},{"key":"B","text":"系统响应时间"},{"key":"C","text":"用户界面设计"},{"key":"D","text":"软件缺陷数量"}],"answer":"B","type":"single"},{"id":422,"question":"计算机的技术性能指标主要是指(????????)。","options":[{"key":"A","text":"计算机所配备的语言、操作系统、外部设备"},{"key":"B","text":"硬盘的容量和内存的容量"},{"key":"C","text":"显示器的分辨率、打印机的性能等配置"},{"key":"D","text":"字长、运算速度、内/外存容量和CPU的时钟频率"}],"answer":"D","type":"single"},{"id":423,"question":"软件测试员在职业道德方面应遵守的原则包括(????????)。","options":[{"key":"A","text":"尊重并保护知识产权"},{"key":"B","text":"随意泄露测试数据和结果"},{"key":"C","text":"严格遵守保密协议和规定"},{"key":"D","text":"公正、客观地评估软件质量"},{"key":"E","text":"随意查看和分享用户数据"}],"answer":"ACD","type":"multiple"},{"id":424,"question":"关于软件测试，下列叙述不正确的(????????)。","options":[{"key":"A","text":"测试开始越早，越有利于发现软件缺陷"},{"key":"B","text":"采用正确的测试用例设计方法，软件测试可以做到穷举测试"},{"key":"C","text":"测试覆盖度和测试用例数量成正比"},{"key":"D","text":"软件测试的时间越长越好"},{"key":"E","text":"软件测试的目的是在软件投入运行之前，以最少的人力和时间发现软件中潜在的各种错误。"}],"answer":"BCD","type":"multiple"},{"id":425,"question":"在软件测试准备阶段，以下(????????)活动是必要的。","options":[{"key":"A","text":"确定测试目标和范围"},{"key":"B","text":"编写测试计划"},{"key":"C","text":"修复所有已知缺陷"},{"key":"D","text":"评审测试用例"},{"key":"E","text":"准备所有可能的测试数据"}],"answer":"ABD","type":"multiple"},{"id":426,"question":"在软件测试实施过程中，测试人员通常需要执行(????????)任务。","options":[{"key":"A","text":"编写测试用例"},{"key":"B","text":"执行测试用例"},{"key":"C","text":"记录测试结果"},{"key":"D","text":"修复软件缺陷"},{"key":"E","text":"部署软件到生产环境"}],"answer":"BC","type":"multiple"},{"id":427,"question":"在执行测试用例时，测试人员需要注意的方面是(????????)。","options":[{"key":"A","text":"测试数据的准备"},{"key":"B","text":"测试环境的搭建"},{"key":"C","text":"测试步骤的执行"},{"key":"D","text":"缺陷的修复进度"},{"key":"E","text":"项目预算的分配"}],"answer":"ABC","type":"multiple"},{"id":428,"question":"在进行软件测试结果分析时，测试人员通常需要考虑的因素是(????????)。","options":[{"key":"A","text":"缺陷的数量"},{"key":"B","text":"缺陷的严重程度"},{"key":"C","text":"测试用例的执行情况"},{"key":"D","text":"软件的开发进度"},{"key":"E","text":"项目团队成员的个人情感"}],"answer":"ABC","type":"multiple"},{"id":429,"question":"缺陷分析是软件测试结果分析的重要组成部分，主要包括的内容有(????????)","options":[{"key":"A","text":"缺陷的分布情况"},{"key":"B","text":"缺陷的性质和类型"},{"key":"C","text":"缺陷的产生原因"},{"key":"D","text":"缺陷的修复人员"},{"key":"E","text":"缺陷的影响范围"}],"answer":"ABCE","type":"multiple"},{"id":430,"question":"软件测试结果分析可以帮助团队实现的目标是(????????)","options":[{"key":"A","text":"评估软件的质量"},{"key":"B","text":"确定测试的有效性"},{"key":"C","text":"预测软件的发布日期"},{"key":"D","text":"优化测试策略"},{"key":"E","text":"确定软件的市场定位"}],"answer":"ABD","type":"multiple"},{"id":431,"question":"在分析测试结果时，以下(????????)数据对评估软件的可靠性至关重要。","options":[{"key":"A","text":"缺陷的发现率"},{"key":"B","text":"缺陷的修复率"},{"key":"C","text":"软件的崩溃次数"},{"key":"D","text":"用户的反馈意见"},{"key":"E","text":"软件的开发效率"}],"answer":"ABCD","type":"multiple"},{"id":432,"question":"在软件测试准备阶段，测试人员通常需要准备的内容是(????????)。","options":[{"key":"A","text":"测试用例"},{"key":"B","text":"测试环境"},{"key":"C","text":"测试数据"},{"key":"D","text":"源代码"},{"key":"E","text":"软件部署环境"}],"answer":"ABC","type":"multiple"},{"id":433,"question":"测试人员或者其它资源不足能作为测试结束标准。(????????)\n答案： 错误","options":[],"answer":"","type":"single"},{"id":434,"question":"代码审查属于静态测试方法。(????????)\n答案： 正确","options":[],"answer":"","type":"single"},{"id":435,"question":"验收测试由开发方主导，用户参与。(????????)\n答案： 错误","options":[],"answer":"","type":"single"},{"id":436,"question":"吞吐量和延迟不属于网络测试的测试指标。(????????)\n答案： 错误","options":[],"answer":"","type":"single"},{"id":437,"question":"在自动化测试中，测试脚本一旦编写完成，就不需要再进行修改或维护。(????????)\n答案： 错误","options":[],"answer":"","type":"single"},{"id":438,"question":"对计算机评价的主要性能指标有时钟频率、数据处理速率、运算精度、内存容量等。(????????)\n答案： 正确","options":[],"answer":"","type":"single"},{"id":439,"question":"软件测试员在团队中应尊重并信任团队成员，积极分享测试经验和技巧。(????????)\n答案： 正确","options":[],"answer":"","type":"single"},{"id":440,"question":"系统交付后，修改原来打印时总是遗漏最后一行记录的问题，该行为属于改正性维护。(????????)\n答案： 正确","options":[],"answer":"","type":"single"},{"id":441,"question":"系统性能测试属于单元测试测试内容。(????????)\n答案： 错误","options":[],"answer":"","type":"single"},{"id":442,"question":"软件测试员在与客户沟通时，应尽可能隐瞒软件中的潜在问题，以维持良好的客户关系。\n答案： 错误","options":[],"answer":"","type":"single"}];
+let examQuestions = [];
+let answers = {};
+let currentIndex = 0;
+let timerInterval = null;
+let startTime = 0;
+let marked = new Set();
+
+let practiceQuestions = [];
+let practiceIndex = 0;
+let practiceAnswers = {};
+let practiceChecked = new Set();
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function formatTime(sec) {
+  const m = Math.floor(sec / 60).toString().padStart(2, '0');
+  const s = (sec % 60).toString().padStart(2, '0');
+  return m + ':' + s;
+}
+
+function showPage(id) {
+  ['page-home', 'page-exam', 'page-result', 'page-practice', 'page-practice-summary'].forEach(p => document.getElementById(p).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  window.scrollTo(0, 0);
+}
+
+function goHome() {
+  if (timerInterval) clearInterval(timerInterval);
+  showPage('page-home');
+}
+
+/* ========== Exam Mode ========== */
+function startExam() {
+  examQuestions = shuffle(ALL_QUESTIONS).slice(0, 90);
+  answers = {};
+  currentIndex = 0;
+  marked = new Set();
+  startTime = Date.now();
+  showPage('page-exam');
+  updateProgress();
+  renderNav();
+  renderQuestion();
+  startTimer();
+}
+
+function startTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+  const el = document.getElementById('timer');
+  timerInterval = setInterval(() => {
+    const sec = Math.floor((Date.now() - startTime) / 1000);
+    el.textContent = formatTime(sec);
+  }, 1000);
+}
+
+function updateProgress() {
+  const answered = Object.values(answers).filter(a => a.length > 0).length;
+  const pct = (answered / 90) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = answered + ' / 90';
+}
+
+function toggleNav() {
+  const header = document.getElementById('nav-header');
+  const body = document.getElementById('nav-body');
+  header.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+function renderNav() {
+  const grid = document.getElementById('nav-grid');
+  grid.innerHTML = '';
+  examQuestions.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = 'nav-item';
+    div.textContent = i + 1;
+    if (answers[q.id] && answers[q.id].length) div.classList.add('answered');
+    if (i === currentIndex) div.classList.add('current');
+    if (marked.has(q.id)) div.classList.add('marked');
+    div.onclick = () => { currentIndex = i; renderQuestion(); };
+    grid.appendChild(div);
+  });
+}
+
+function renderQuestion() {
+  const q = examQuestions[currentIndex];
+  document.getElementById('q-num').textContent = currentIndex + 1;
+  const typeEl = document.getElementById('q-type');
+  typeEl.textContent = q.type === 'multiple' ? '多选' : '单选';
+  typeEl.className = 'q-type ' + q.type;
+  document.getElementById('q-title').innerHTML = escapeHtml(q.question).replace(/\n/g, '<br>');
+
+  const optsEl = document.getElementById('q-options');
+  optsEl.innerHTML = '';
+  const type = q.type === 'multiple' ? 'checkbox' : 'radio';
+  const name = 'opt-' + q.id;
+  const userAns = answers[q.id] || [];
+
+  q.options.forEach(opt => {
+    const label = document.createElement('label');
+    label.className = 'option';
+    if (userAns.includes(opt.key)) label.classList.add('selected');
+
+    const input = document.createElement('input');
+    input.type = type;
+    input.name = name;
+    input.value = opt.key;
+    input.checked = userAns.includes(opt.key);
+    input.onchange = () => onOptionChange(q, type);
+
+    const span = document.createElement('span');
+    span.className = 'option-text';
+    span.innerHTML = '<span class="option-key">' + opt.key + '</span>' + escapeHtml(opt.text);
+
+    label.appendChild(input);
+    label.appendChild(span);
+    optsEl.appendChild(label);
+  });
+
+  document.getElementById('btn-prev').disabled = currentIndex === 0;
+  document.getElementById('btn-next').disabled = currentIndex === examQuestions.length - 1;
+  const markBtn = document.getElementById('btn-mark');
+  markBtn.textContent = marked.has(q.id) ? '取消标记' : '标记';
+
+  renderNav();
+  updateProgress();
+}
+
+function onOptionChange(q, type) {
+  const inputs = document.querySelectorAll('input[name="opt-' + q.id + '"]');
+  const vals = Array.from(inputs).filter(i => i.checked).map(i => i.value);
+  answers[q.id] = vals;
+
+  inputs.forEach(inp => {
+    const label = inp.closest('.option');
+    if (inp.checked) label.classList.add('selected');
+    else label.classList.remove('selected');
+  });
+
+  renderNav();
+  updateProgress();
+}
+
+function prevQuestion() {
+  if (currentIndex > 0) { currentIndex--; renderQuestion(); }
+}
+
+function nextQuestion() {
+  if (currentIndex < examQuestions.length - 1) { currentIndex++; renderQuestion(); }
+}
+
+function markCurrent() {
+  const q = examQuestions[currentIndex];
+  if (marked.has(q.id)) marked.delete(q.id);
+  else marked.add(q.id);
+  renderQuestion();
+}
+
+function submitExam() {
+  const answered = Object.values(answers).filter(a => a.length > 0).length;
+  let msg = '确定要提交试卷吗？';
+  if (answered < 90) msg += '\n你还有 ' + (90 - answered) + ' 题未作答。';
+  if (!confirm(msg)) return;
+  if (timerInterval) clearInterval(timerInterval);
+  showResult();
+}
+
+function showResult() {
+  showPage('page-result');
+  let correct = 0, wrong = 0, empty = 0;
+  examQuestions.forEach(q => {
+    const ua = answers[q.id] || [];
+    if (ua.length === 0) { empty++; }
+    else {
+      const userSorted = ua.slice().sort().join('');
+      const ansSorted = q.answer.split('').sort().join('');
+      if (userSorted === ansSorted) correct++;
+      else wrong++;
+    }
+  });
+
+  const pct = Math.round((correct / 90) * 100);
+  document.getElementById('donut-text').textContent = pct + '%';
+  document.getElementById('meta-correct').textContent = correct;
+  document.getElementById('meta-wrong').textContent = wrong;
+  document.getElementById('meta-empty').textContent = empty;
+
+  const circumference = 2 * Math.PI * 60;
+  const offset = circumference - (correct / 90) * circumference;
+  requestAnimationFrame(() => {
+    document.getElementById('donut-fill').style.strokeDashoffset = offset;
+  });
+
+  renderResultList('all');
+}
+
+function renderResultList(filter) {
+  const list = document.getElementById('result-list');
+  list.innerHTML = '';
+  examQuestions.forEach((q, idx) => {
+    const ua = answers[q.id] || [];
+    const userSorted = ua.slice().sort().join('');
+    const ansSorted = q.answer.split('').sort().join('');
+    let status = '';
+    if (ua.length === 0) status = 'empty';
+    else if (userSorted === ansSorted) status = 'correct';
+    else status = 'wrong';
+
+    if (filter !== 'all' && filter !== status) return;
+
+    const item = document.createElement('div');
+    item.className = 'r-item';
+    item.dataset.open = 'false';
+
+    const statusText = status === 'correct' ? '正确' : (status === 'wrong' ? '错误' : '未答');
+    const userAnsText = ua.length ? ua.sort().join('、') : '—';
+    const correctAnsText = q.answer.split('').sort().join('、');
+
+    let optionsHtml = '';
+    q.options.forEach(opt => {
+      let cls = 'r-opt';
+      const isCorrect = q.answer.includes(opt.key);
+      const isChosen = ua.includes(opt.key);
+      if (isCorrect) cls += ' correct';
+      else if (isChosen && !isCorrect) cls += ' wrong';
+      optionsHtml += '<div class="' + cls + '">' + opt.key + '. ' + escapeHtml(opt.text) + '</div>';
+    });
+
+    item.innerHTML =
+      '<div class="r-summary" onclick="toggleResultItem(this)">' +
+        '<span class="r-badge ' + status + '">' + statusText + '</span>' +
+        '<span class="r-title">' + (idx + 1) + '. ' + escapeHtml(q.question).replace(/\n/g, ' ') + '</span>' +
+        '<span class="r-arrow">▼</span>' +
+      '</div>' +
+      '<div class="r-detail"><div class="r-body">' +
+        '<div class="r-options">' + optionsHtml + '</div>' +
+        '<div class="r-answer-row">' +
+          '<span>你的答案：<strong>' + userAnsText + '</strong></span>' +
+          '<span>正确答案：<strong style="color:var(--success);">' + correctAnsText + '</strong></span>' +
+        '</div>' +
+      '</div></div>';
+    list.appendChild(item);
+  });
+}
+
+function toggleResultItem(el) {
+  const item = el.closest('.r-item');
+  item.classList.toggle('open');
+}
+
+function filterResult(type, btn) {
+  document.querySelectorAll('.chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderResultList(type);
+}
+
+/* ========== Practice Mode ========== */
+function startPractice() {
+  practiceQuestions = shuffle(ALL_QUESTIONS);
+  practiceIndex = 0;
+  practiceAnswers = {};
+  practiceChecked = new Set();
+  showPage('page-practice');
+  renderPracticeQuestion();
+}
+
+function renderPracticeQuestion() {
+  const q = practiceQuestions[practiceIndex];
+  document.getElementById('p-num').textContent = practiceIndex + 1;
+  const typeEl = document.getElementById('p-type');
+  typeEl.textContent = q.type === 'multiple' ? '多选' : '单选';
+  typeEl.className = 'q-type ' + q.type;
+  document.getElementById('p-title').innerHTML = escapeHtml(q.question).replace(/\n/g, '<br>');
+
+  const pct = ((practiceIndex + 1) / practiceQuestions.length) * 100;
+  document.getElementById('practice-progress-bar').style.width = pct + '%';
+  document.getElementById('practice-progress-text').textContent = (practiceIndex + 1) + ' / ' + practiceQuestions.length;
+
+  const optsEl = document.getElementById('p-options');
+  optsEl.innerHTML = '';
+  const type = q.type === 'multiple' ? 'checkbox' : 'radio';
+  const name = 'p-opt-' + q.id;
+  const userAns = practiceAnswers[q.id] || [];
+  const isChecked = practiceChecked.has(q.id);
+
+  q.options.forEach(opt => {
+    const label = document.createElement('label');
+    label.className = 'option';
+    const isCorrect = q.answer.includes(opt.key);
+    const isChosen = userAns.includes(opt.key);
+
+    if (isChecked) {
+      if (isCorrect) label.classList.add('correct');
+      else if (isChosen) label.classList.add('wrong-option');
+    } else if (isChosen) {
+      label.classList.add('selected');
+    }
+
+    const input = document.createElement('input');
+    input.type = type;
+    input.name = name;
+    input.value = opt.key;
+    input.checked = isChosen;
+    input.disabled = isChecked;
+    input.onchange = () => onPracticeOptionChange(q);
+
+    const span = document.createElement('span');
+    span.className = 'option-text';
+    span.innerHTML = '<span class="option-key">' + opt.key + '</span>' + escapeHtml(opt.text);
+
+    label.appendChild(input);
+    label.appendChild(span);
+    optsEl.appendChild(label);
+  });
+
+  const confirmWrap = document.getElementById('p-confirm-wrap');
+  const resultDiv = document.getElementById('p-result');
+  const nextBtn = document.getElementById('btn-p-next');
+  const prevBtn = document.getElementById('btn-p-prev');
+
+  if (isChecked) {
+    confirmWrap.style.display = 'none';
+    resultDiv.classList.remove('hidden');
+    nextBtn.classList.remove('hidden');
+    const ua = userAns.slice().sort().join('');
+    const ca = q.answer.split('').sort().join('');
+    const isCorrect = ua === ca;
+    const statusEl = document.getElementById('p-result-status');
+    statusEl.textContent = isCorrect ? '✓ 回答正确' : '✗ 回答错误';
+    statusEl.style.color = isCorrect ? 'var(--success)' : 'var(--danger)';
+    document.getElementById('p-user-ans').textContent = userAns.length ? userAns.sort().join('、') : '无';
+    document.getElementById('p-correct-ans').textContent = q.answer.split('').sort().join('、');
+  } else {
+    confirmWrap.style.display = q.type === 'multiple' ? 'block' : 'none';
+    resultDiv.classList.add('hidden');
+    nextBtn.classList.add('hidden');
+  }
+
+  prevBtn.disabled = practiceIndex === 0;
+  nextBtn.textContent = practiceIndex === practiceQuestions.length - 1 ? '完成' : '下一题';
+}
+
+function onPracticeOptionChange(q) {
+  const inputs = document.querySelectorAll('input[name="p-opt-' + q.id + '"]');
+  const vals = Array.from(inputs).filter(i => i.checked).map(i => i.value);
+  practiceAnswers[q.id] = vals;
+
+  inputs.forEach(inp => {
+    const label = inp.closest('.option');
+    if (inp.checked) label.classList.add('selected');
+    else label.classList.remove('selected');
+  });
+
+  if (q.type === 'single') {
+    confirmPracticeAnswer();
+  }
+}
+
+function confirmPracticeAnswer() {
+  const q = practiceQuestions[practiceIndex];
+  const ua = practiceAnswers[q.id] || [];
+  if (ua.length === 0) {
+    alert('请至少选择一个答案');
+    return;
+  }
+  practiceChecked.add(q.id);
+  renderPracticeQuestion();
+}
+
+function nextPractice() {
+  if (practiceIndex < practiceQuestions.length - 1) {
+    practiceIndex++;
+    renderPracticeQuestion();
+  } else {
+    showPracticeSummary();
+  }
+}
+
+function prevPractice() {
+  if (practiceIndex > 0) {
+    practiceIndex--;
+    renderPracticeQuestion();
+  }
+}
+
+function showPracticeSummary() {
+  showPage('page-practice-summary');
+  let correct = 0, wrong = 0;
+  practiceQuestions.forEach(q => {
+    const ua = practiceAnswers[q.id] || [];
+    if (ua.length === 0) { wrong++; }
+    else {
+      const userSorted = ua.slice().sort().join('');
+      const ansSorted = q.answer.split('').sort().join('');
+      if (userSorted === ansSorted) correct++;
+      else wrong++;
+    }
+  });
+  const pct = Math.round((correct / practiceQuestions.length) * 100);
+  document.getElementById('practice-donut-text').textContent = pct + '%';
+  document.getElementById('practice-meta-correct').textContent = correct;
+  document.getElementById('practice-meta-wrong').textContent = wrong;
+  const circumference = 2 * Math.PI * 60;
+  const offset = circumference - (correct / practiceQuestions.length) * circumference;
+  requestAnimationFrame(() => {
+    document.getElementById('practice-donut-fill').style.strokeDashoffset = offset;
+  });
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+/* Keyboard shortcuts */
+document.addEventListener('keydown', (e) => {
+  if (document.getElementById('page-exam').classList.contains('hidden') === false) {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prevQuestion(); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); nextQuestion(); }
+    else if (e.key === 'm' || e.key === 'M') { e.preventDefault(); markCurrent(); }
+    else if (e.key >= '1' && e.key <= '5') {
+      const idx = parseInt(e.key, 10) - 1;
+      const q = examQuestions[currentIndex];
+      if (q && q.options[idx]) {
+        const inp = document.querySelector('#page-exam input[value="' + q.options[idx].key + '"]');
+        if (inp) {
+          e.preventDefault();
+          if (q.type === 'multiple') inp.checked = !inp.checked;
+          else inp.checked = true;
+          inp.dispatchEvent(new Event('change'));
+        }
+      }
+    }
+  } else if (document.getElementById('page-practice').classList.contains('hidden') === false) {
+    if (e.target.tagName === 'INPUT') return;
+    const q = practiceQuestions[practiceIndex];
+    const isChecked = q && practiceChecked.has(q.id);
+
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prevPractice(); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); if (isChecked) nextPractice(); }
+    else if (e.key >= '1' && e.key <= '5') {
+      const idx = parseInt(e.key, 10) - 1;
+      if (q && !isChecked && q.options[idx]) {
+        const inp = document.querySelector('#page-practice input[value="' + q.options[idx].key + '"]');
+        if (inp) {
+          e.preventDefault();
+          if (q.type === 'multiple') inp.checked = !inp.checked;
+          else inp.checked = true;
+          inp.dispatchEvent(new Event('change'));
+        }
+      }
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (q && !isChecked && q.type === 'multiple') {
+        confirmPracticeAnswer();
+      } else if (isChecked) {
+        nextPractice();
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
